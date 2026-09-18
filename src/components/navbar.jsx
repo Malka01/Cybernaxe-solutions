@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
@@ -24,7 +25,7 @@ export default function Navbar() {
         <div className="nav-inner">
 
           {/* Logo */}
-          <a href="#" className="nav-logo" onClick={closeMenu}>
+          <a href="/" className="nav-logo" onClick={closeMenu}>
             <img
               src="/logo/Cybernaxe-Solutions-Logo.jpg"
               alt="Cybernaxe Solutions"
