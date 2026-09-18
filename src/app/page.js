@@ -300,42 +300,38 @@ const handleSubmit = async (e) => {
             Solutions for <span>Growing Businesses</span>
           </h2>
 
-          <div className="tools-grid">
-            <div className="tool-card reveal">
-              <div className="skill-icon">🤖</div>
-              <div className="tool-name">AI Agents</div>
-              <div className="tool-tooltip">Intelligent business assistants</div>
-              <p>
+          <div className="solutions-grid">
+            <div className="solution-card reveal">
+              <div className="solution-icon">🤖</div>
+              <h3 className="solution-title">AI Agents</h3>
+              <p className="solution-desc">
                 Customer support, lead qualification, knowledge assistants and
                 task automation.
               </p>
             </div>
 
-            <div className="tool-card reveal reveal-delay-1">
-              <div className="skill-icon">⚙️</div>
-              <div className="tool-name">Business Automation</div>
-              <div className="tool-tooltip">Automate repetitive workflows</div>
-              <p>
+            <div className="solution-card reveal reveal-delay-1">
+              <div className="solution-icon">⚙️</div>
+              <h3 className="solution-title">Business Automation</h3>
+              <p className="solution-desc">
                 Connect forms, databases, APIs, CRM systems, notifications and
                 AI workflows.
               </p>
             </div>
 
-            <div className="tool-card reveal reveal-delay-2">
-              <div className="skill-icon">💻</div>
-              <div className="tool-name">Custom Software</div>
-              <div className="tool-tooltip">Built around your workflow</div>
-              <p>
+            <div className="solution-card reveal reveal-delay-2">
+              <div className="solution-icon">💻</div>
+              <h3 className="solution-title">Custom Software</h3>
+              <p className="solution-desc">
                 Dashboards, POS systems, management platforms and internal
                 business tools.
               </p>
             </div>
 
-            <div className="tool-card reveal">
-              <div className="skill-icon">🌐</div>
-              <div className="tool-name">Web Applications</div>
-              <div className="tool-tooltip">Modern digital experiences</div>
-              <p>
+            <div className="solution-card reveal">
+              <div className="solution-icon">🌐</div>
+              <h3 className="solution-title">Web Applications</h3>
+              <p className="solution-desc">
                 Business websites, e-commerce platforms, booking systems and
                 web applications.
               </p>
@@ -841,7 +837,8 @@ const handleSubmit = async (e) => {
             <input
               type="text"
               className="chatbot-input"
-              placeholder="Ask about our services..."
+              // placeholder="Ask about our services..."
+              placeholder="Currently Chatbot under development phase.."
             />
             <button className="chatbot-send">Send</button>
           </div>
