@@ -27,7 +27,7 @@ export default function Navbar() {
           {/* Logo */}
           <a href="/" className="nav-logo" onClick={closeMenu}>
             <img
-              src="/logo/Cybernaxe-Solutions-Logo.jpg"
+              src="/Logo/Cybernaxe-Solutions-Logo.jpg"
               alt="Cybernaxe Solutions"
               className="nav-profile-img"
             />
