@@ -329,151 +329,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ================= SERVICES ================= */}
-
-      {/* <section id="services">
-        <div className="container">
-          <div className="section-label">Our Services</div>
-
-          <h2 className="section-title">
-            Solutions built for
-            <span> modern businesses.</span>
-          </h2>
-
-          <div className="projects-grid">
-            <div className="project-card reveal">
-              <div className="project-img">
-                <div className="project-type">AI</div>
-                <div
-                  style={{
-                    padding: '60px 20px',
-                    fontSize: '60px',
-                    textAlign: 'center',
-                  }}
-                >
-                <img 
-                src="/project/ai-agent.png" 
-                alt="AI Agent"
-                className="project-image object-fit cover"/>
-                </div>
-              </div>
-
-              <div className="project-body">
-                <div className="project-title">AI Agent Development</div>
-                <div className="project-desc">
-                  Build AI agents that communicate with customers,
-                  answer questions, qualify leads, handle bookings and
-                  support business operations.
-                </div>
-                <div className="project-tags">
-                  <span className="tag">AI</span>
-                  <span className="tag">LLMs</span>
-                  <span className="tag">RAG</span>
-                  <span className="tag">Automation</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="project-card reveal reveal-delay-1">
-              <div className="project-img">
-                <div className="project-type">Automation</div>
-                <div
-                  style={{
-                    padding: '60px 20px',
-                    fontSize: '60px',
-                    textAlign: 'center',
-                  }}
-                >
-                  <img 
-                src="/project/ai-agent.png" 
-                alt="AI Agent"
-                className="project-image object-fit cover"/>
-                </div>
-              </div>
-
-              <div className="project-body">
-                <div className="project-title">Business Automation</div>
-                <div className="project-desc">
-                  Connect your tools and automate repetitive workflows
-                  so your team can spend more time on valuable work.
-                </div>
-                <div className="project-tags">
-                  <span className="tag">n8n</span>
-                  <span className="tag">APIs</span>
-                  <span className="tag">Webhooks</span>
-                  <span className="tag">Automation</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="project-card reveal reveal-delay-2">
-              <div className="project-img">
-                <div className="project-type">Software</div>
-                <div
-                  style={{
-                    padding: '60px 20px',
-                    fontSize: '60px',
-                    textAlign: 'center',
-                  }}
-                >
-                  <img 
-                src="/project/ai-agent.png" 
-                alt="AI Agent"
-                className="project-image object-fit cover"/>
-                </div>
-              </div>
-
-              <div className="project-body">
-                <div className="project-title">Custom Web Applications</div>
-                <div className="project-desc">
-                  Modern web applications, dashboards, customer portals
-                  and business management systems.
-                </div>
-                <div className="project-tags">
-                  <span className="tag">Next.js</span>
-                  <span className="tag">React</span>
-                  <span className="tag">Node.js</span>
-                  <span className="tag">MongoDB</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="project-card reveal">
-              <div className="project-img">
-                <div className="project-type">AI Solutions</div>
-                <div
-                   className="ai-solutions-img"
-                  // style={{
-                  //   padding: '60px 20px',
-                  //   fontSize: '60px',
-                  //   textAlign: 'center',
-                  // }}
-                >
-                  <AIBusinessIllustration />
-                </div>
-              </div>
-
-              <div className="project-body">
-                <div className="project-title">
-                  AI-Powered Business Solutions
-                </div>
-                <div className="project-desc">
-                  Add AI capabilities to existing business systems
-                  including intelligent search, assistants, document
-                  processing and knowledge retrieval.
-                </div>
-                <div className="project-tags">
-                  <span className="tag">OpenAI</span>
-                  <span className="tag">RAG</span>
-                  <span className="tag">Vector DB</span>
-                  <span className="tag">APIs</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
       {/* ================= SERVICES ================= */}
 
 <section id="services">
@@ -751,14 +606,48 @@ export default function Home() {
                 </div>
                 <div className="project-tags">
                   <span className="tag">Next.js</span>
-                  <span className="tag">React</span>
+                  <span className="tag">MERN</span>
+                  <span className="tag">Tailwind</span>
                   <span className="tag">JavaScript</span>
                 </div>
                 <div className="project-cta">Live View</div>
               </div>
             </div>
 
-            <Link href="https://v0-vila-resort-booking.vercel.app/">
+            <Link href="/demos/bio-class" target='_blank' rel="noopener noreferrer">
+              <div className="project-card reveal reveal-delay-2">
+                {/* <div className="project-img"> */}
+                <div className="project-img">
+                  <img
+                    src="/Project/class.png"
+                    alt="Grocery Delivery Application"
+                    className="project-image"
+                  />
+                  {/* </div> */}
+                  <div className="project-type">One Page</div>
+                </div>
+
+                <div className="project-body">
+                  <div className="project-title">
+                    Class Student Poratal
+                  </div>
+                  <div className="project-desc">
+                    A full-stack reporting platform with team
+                    dashboards, analytics and an AI-powered assistant
+                    for report insights.
+                  </div>
+                  <div className="project-tags">
+                    <span className="tag">MERN</span>
+                    <span className="tag">APIs</span>
+                    <span className="tag">Next</span>
+                    <span className="tag">Claude</span>
+                  </div>
+                  <div className="project-cta">Live View</div>
+                </div>
+              </div>
+            </Link>
+
+            <Link href="https://v0-vila-resort-booking.vercel.app" target="_blank" rel="noopener noreferrer">
               <div className="project-card reveal reveal-delay-1">
                 <div className="project-img">
                   <img
@@ -773,7 +662,7 @@ export default function Home() {
                   <div className="project-title">Villa Resort</div>
                   <div className="project-desc">
                     Event discovery and ticketing platform designed for
-                    discovering and managing events.
+                    discovering and managing events, venues, and ticket sales with a focus on user experience and event promotion.
                   </div>
                   <div className="project-tags">
                     <span className="tag">HTML</span>
@@ -782,41 +671,6 @@ export default function Home() {
                     <span className="tag">PHP</span>
                   </div>
                   <div className="project-cta">Live View</div>
-                </div>
-              </div>
-            </Link>
-
-            <Link href="https://github.com/Malka01/Week-dashboard">
-              <div className="project-card reveal reveal-delay-2">
-                <div className="project-img">
-                  <div
-                    style={{
-                      padding: '60px 20px',
-                      fontSize: '60px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    📊
-                  </div>
-                  <div className="project-type">AI Dashboard</div>
-                </div>
-
-                <div className="project-body">
-                  <div className="project-title">
-                    Weekly Report & AI Dashboard
-                  </div>
-                  <div className="project-desc">
-                    A full-stack reporting platform with team
-                    dashboards, analytics and an AI-powered assistant
-                    for report insights.
-                  </div>
-                  <div className="project-tags">
-                    <span className="tag">MERN</span>
-                    <span className="tag">Pinocorn</span>
-                    <span className="tag">LLM/RAG</span>
-                    <span className="tag">OpenAI</span>
-                  </div>
-                  <div className="project-cta">View Project</div>
                 </div>
               </div>
             </Link>
@@ -833,16 +687,17 @@ export default function Home() {
                 </div>
 
                 <div className="project-body">
-                  <div className="project-title">SafeLink</div>
+                  <div className="project-title">Ai Agent</div>
                   <div className="project-desc">
                     An emergency response application designed around
                     accident detection and real-time emergency
                     communication.
                   </div>
                   <div className="project-tags">
-                    <span className="tag">UI/UX</span>
-                    <span className="tag">Mobile</span>
-                    <span className="tag">IoT</span>
+                    <span className="tag">MERN</span>
+                    <span className="tag">Pinocorn</span>
+                    <span className="tag">LLM/RAG</span>
+                    <span className="tag">OpenAI</span>
                   </div>
                   <div className="project-cta">Ongoing</div>
                 </div>
