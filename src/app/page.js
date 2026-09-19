@@ -1,15 +1,30 @@
-/* eslint-disable @next/next/no-page-custom-font */
-/* eslint-disable @next/next/no-css-tags */
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import "./globals.css";
-import emailjs from "@emailjs/browser";
-import Image from "next/image";
-import Head from "next/head";
-import Script from "next/script";
-import Link from "next/link";
-import Navbar from "@/components/navbar";
-import { useEffect, useState } from "react";
+
+import './globals.css';
+import Image from 'next/image';
+import Head from 'next/head';
+import Script from 'next/script';
+import Link from 'next/link';
+import Navbar from '@/components/navbar';
+import Footer from '@/components/Footer';
+import { useEffect, useState } from 'react';
+import AITransformation from '@/components/AITransformation';
+import { MdOutlineSupportAgent } from "react-icons/md";
+import { TbAutomation } from "react-icons/tb";
+import { MdDataThresholding } from "react-icons/md";
+import { FaLaptop } from "react-icons/fa";
+import { RiCustomerService2Line } from "react-icons/ri";
+import { GiDiceTarget } from "react-icons/gi";
+import { SiBookingdotcom } from "react-icons/si";
+import { FcWorkflow } from "react-icons/fc";
+import { BiWorld } from "react-icons/bi";
+import { FaSquareWhatsapp } from "react-icons/fa6";
+import { FaLinkedin } from "react-icons/fa6";
+import AIBusinessIllustration from '@/components/AIBusinessIllustration';
+import AIAgentIllustration from '@/components/AIAgentIllustration';
+import BusinessAutomationIllustration from '@/components/BusinessAutomationIllustration';
+import WebAppsIllustration from '@/components/WebAppsIllustration';
 
 export default function Home() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -19,97 +34,113 @@ export default function Home() {
   const closeChat = () => setChatOpen(false);
 
   const showToast = (type, icon, title, sub) => {
-    if (typeof window !== "undefined" && typeof window.showToast === "function") {
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.showToast === 'function'
+    ) {
       window.showToast(type, icon, title, sub);
     }
   };
 
   const closeToast = () => {
-    if (typeof window !== "undefined" && typeof window.hideToast === "function") {
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.hideToast === 'function'
+    ) {
       window.hideToast();
     }
   };
 
-  // Top of file — remove emailjs import if no longer used:
-// import emailjs from "@emailjs/browser";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+    const url = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
 
-  const url = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
+    if (!url) {
+      showToast(
+        'error',
+        '⚠️',
+        'Form not configured',
+        'Contact form is temporarily unavailable.'
+      );
+      return;
+    }
 
-  if (!url) {
-    showToast(
-      "error",
-      "⚠️",
-      "Form not configured",
-      "Contact form is temporarily unavailable."
-    );
-    return;
-  }
+    const payload = {
+      name: e.target.name.value.trim(),
+      email: e.target.email.value.trim(),
+      subject: e.target.subject.value.trim(),
+      message: e.target.message.value.trim(),
+      source: 'Cybernaxe Website',
+      page: 'Homepage',
+    };
 
-  const payload = {
-    name:    e.target.name.value.trim(),
-    email:   e.target.email.value.trim(),
-    subject: e.target.subject.value.trim(),
-    message: e.target.message.value.trim(),
-    source:  "Cybernaxe Website",
-    page:    "Homepage",
+    if (!payload.name || !payload.email || !payload.message) {
+      showToast(
+        'error',
+        '⚠️',
+        'Missing fields',
+        'Please fill in all required fields.'
+      );
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      await fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+      });
+
+      e.target.reset();
+
+      showToast(
+        'success',
+        '🎉',
+        'Message Sent!',
+        "We'll get back to you within 24 hours."
+      );
+    } catch (error) {
+      console.error('SUBMIT ERROR:', error);
+
+      showToast(
+        'error',
+        '⚠️',
+        'Message not sent',
+        'Please try again or contact us directly.'
+      );
+    } finally {
+      setIsSending(false);
+    }
   };
-
-  if (!payload.name || !payload.email || !payload.message) {
-    showToast("error", "⚠️", "Missing fields", "Please fill in all required fields.");
-    return;
-  }
-
-  setIsSending(true);
-
-  try {
-    // no-cors → we cannot read the response. Treat as fire-and-forget.
-    await fetch(url, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload),
-    });
-
-    e.target.reset();
-    showToast(
-      "success",
-      "🎉",
-      "Message Sent!",
-      "We'll get back to you within 24 hours."
-    );
-  } catch (error) {
-    console.error("SUBMIT ERROR:", error);
-    showToast(
-      "error",
-      "⚠️",
-      "Message not sent",
-      "Please try again or email us directly."
-    );
-  } finally {
-    setIsSending(false);
-  }
-};
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
     setTimeout(() => {
-      document.querySelectorAll('.reveal').forEach(el => {
+      document.querySelectorAll('.reveal').forEach((el) => {
         el.classList.remove('visible');
       });
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(el => {
-          if (el.isIntersecting) {
-            el.target.classList.add('visible');
-          }
-        });
-      }, { threshold: 0.15 });
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
 
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      document
+        .querySelectorAll('.reveal')
+        .forEach((el) => observer.observe(el));
+
+      return () => observer.disconnect();
     }, 0);
   }, []);
 
@@ -118,20 +149,38 @@ const handleSubmit = async (e) => {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Cybernaxe Solutions | AI Agents & Business Automation</title>
+
+        <title>
+          Cybernaxe Solutions | AI Agents, Automation & Software Solutions
+        </title>
+
         <meta
           name="description"
-          content="Cybernaxe Solutions builds AI agents, business automation systems, custom software and modern web applications that help businesses automate customer communication, leads, bookings and repetitive workflows."
+          content="Cybernaxe Solutions builds AI agents, business automation systems, custom web applications and AI-powered digital solutions for modern businesses."
         />
-        <meta property="og:title" content="Cybernaxe Solutions | AI Agents & Business Automation" />
+
+        <meta
+          name="keywords"
+          content="AI agents, AI automation, business automation, software development, web applications, AI solutions, Cybernaxe Solutions"
+        />
+
+        <meta
+          property="og:title"
+          content="Cybernaxe Solutions | AI Agents & Business Automation"
+        />
         <meta
           property="og:description"
           content="AI agents, business automation, custom software and modern web applications."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="/image/cybernaxe-og.png" />
+        <meta property="og:image" content="/Logo/Cybernaxe-Solutions-Logo.jpg" />
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
@@ -141,76 +190,66 @@ const handleSubmit = async (e) => {
 
       <Navbar />
 
-      {/* ─── HERO ─── */}
+      {/* ================= HERO ================= */}
+
       <section id="hero">
         <div className="hero-bg">
-          <div className="hero-blob hero-blob-1" />
+          {/* <div className="hero-blob hero-blob-1" />
           <div className="hero-blob hero-blob-2" />
-          <div className="hero-blob hero-blob-3" />
+          <div className="hero-blob hero-blob-3" /> */}
         </div>
 
         <div className="container">
           <div className="hero-grid">
             <div className="hero-content">
-              <div className="hero-badge">
-                {/* AI Automation • Custom Software • Web Applications */}
-                Site Currently Development Pharse But You can Contact via Whats App Contact Form
-              </div>
+              <div className="hero-badge">AI • Automation • Software</div>
 
               <h1 className="hero-title">
                 Build Smarter.
                 <br />
-                <span className="name">Automate Your Business.</span>
+                <span className="name">Automate More.</span>
               </h1>
 
-              <div className="hero-role">
-                AI Agents & Business Automation
-              </div>
+              <div className="hero-role">AI-Powered Business Solutions</div>
 
               <p className="hero-sub">
-                We help businesses automate customer communication, capture and
-                qualify leads, manage bookings, and streamline repetitive workflows
-                with AI-powered solutions and modern software.
+                Cybernaxe Solutions helps businesses automate repetitive
+                work, engage customers with AI agents, and build powerful
+                digital products that drive real business growth.
               </p>
 
               <div className="hero-actions">
-                <a href="#solutions" className="btn btn-primary">
-                  <svg width={16} height={16} fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" strokeWidth="2.5">
-                    <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" />
-                    <path d="M4 10h16M10 4v16" />
-                  </svg>
-                  Explore Solutions
-                </a>
-
-                <a href="#contact" className="btn btn-secondary">
-                  <svg width={16} height={16} fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" strokeWidth="2.5">
-                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
+                <a href="#contact" className="btn btn-primary">
                   Start a Project
+                </a>
+                <a href="#services" className="btn btn-secondary">
+                  Explore Solutions
                 </a>
               </div>
 
               <div className="hero-stats">
                 <div>
                   <div className="hero-stat-num">AI</div>
-                  <div className="hero-stat-label">Automation</div>
+                  <div className="hero-stat-label">Powered Solutions</div>
                 </div>
                 <div>
                   <div className="hero-stat-num">Web</div>
-                  <div className="hero-stat-label">Applications</div>
+                  <div className="hero-stat-label">Digital Products</div>
                 </div>
                 <div>
-                  <div className="hero-stat-num">Custom</div>
-                  <div className="hero-stat-label">Solutions</div>
+                  <div className="hero-stat-num">24/7</div>
+                  <div className="hero-stat-label">Automation</div>
                 </div>
               </div>
+            </div>
+
+            <div className="hero-visual">
+              <AITransformation />
             </div>
           </div>
 
           <div className="scroll-indicator">
-            <div className="scroll-text">Explore</div>
+            <div className="scroll-text">Explore Cybernaxe</div>
             <div className="scroll-mouse">
               <div className="mouse-wheel" />
             </div>
@@ -218,73 +257,72 @@ const handleSubmit = async (e) => {
         </div>
       </section>
 
-      {/* ─── ABOUT CYBERNAXE ─── */}
+      {/* ================= ABOUT ================= */}
+
       <section id="about">
         <div className="container">
-          <div className="section-label">About Cybernaxe</div>
+          <div className="section-label">What We Do</div>
 
           <div className="about-grid">
             <div className="about-text reveal">
               <h2 className="section-title">
-                Technology That Solves <span>Real Business Problems</span>
+                Technology that
+                <span> solves real problems.</span>
               </h2>
 
               <p>
-                Cybernaxe Solutions is a technology studio focused on AI-powered
-                automation, custom software, and modern web applications.
+                Cybernaxe Solutions is a technology solutions company
+                focused on helping businesses use AI, automation and
+                modern software to work smarter.
               </p>
 
               <p>
-                We build practical digital solutions that help businesses reduce
-                repetitive work, improve customer communication, capture leads,
-                manage bookings, and organize their everyday operations.
+                From AI-powered customer communication to custom
+                business platforms, we design and build digital
+                solutions around real business needs.
               </p>
 
               <p>
-                Our approach combines modern web technologies with artificial
-                intelligence to create solutions around the actual workflow of each
-                business — rather than forcing businesses to adapt to generic software.
-              </p>
-
-              <p>
-                From AI agents and knowledge assistants to dashboards, POS systems,
-                booking platforms, and business websites, we turn ideas and
-                operational challenges into working digital products.
+                Our goal is simple: reduce repetitive work, improve
+                customer experiences and create systems that help
+                businesses scale.
               </p>
             </div>
 
             <div className="skills-grid reveal reveal-delay-2">
               <div className="skill-card">
-                <div className="skill-icon">🤖</div>
-                <div className="skill-name">AI Automation</div>
-                <div className="skill-desc">
-                  Automate customer communication, lead qualification, bookings and
-                  repetitive workflows.
-                </div>
-              </div>
-
-              <div className="skill-card">
-                <div className="skill-icon">💬</div>
+                <div className="skill-icon"><MdOutlineSupportAgent /></div>
                 <div className="skill-name">AI Agents</div>
                 <div className="skill-desc">
-                  Intelligent assistants connected to your business information and
-                  workflows.
+                  Intelligent agents for customer support, lead
+                  generation, bookings and business workflows.
                 </div>
               </div>
 
               <div className="skill-card">
-                <div className="skill-icon">💻</div>
+                <div className="skill-icon"><TbAutomation /></div>
+                <div className="skill-name">Business Automation</div>
+                <div className="skill-desc">
+                  Automate repetitive tasks and connect business
+                  processes using modern automation.
+                </div>
+              </div>
+
+              <div className="skill-card">
+                <div className="skill-icon"><FaLaptop /></div>
                 <div className="skill-name">Custom Software</div>
                 <div className="skill-desc">
-                  Dashboards, management systems, APIs and internal business tools.
+                  Scalable web applications and digital platforms
+                  built around your business.
                 </div>
               </div>
 
               <div className="skill-card">
-                <div className="skill-icon">🌐</div>
-                <div className="skill-name">Web Applications</div>
+                <div className="skill-icon"><MdDataThresholding /></div>
+                <div className="skill-name">Data & Dashboards</div>
                 <div className="skill-desc">
-                  Modern, responsive websites and web apps designed around business goals.
+                  Turn business data into useful dashboards, reports
+                  and actionable insights.
                 </div>
               </div>
             </div>
@@ -292,160 +330,450 @@ const handleSubmit = async (e) => {
         </div>
       </section>
 
-      {/* ─── SOLUTIONS ─── */}
-      <section id="solutions">
+      {/* ================= SERVICES ================= */}
+
+      {/* <section id="services">
         <div className="container">
-          <div className="section-label">What We Build</div>
+          <div className="section-label">Our Services</div>
+
           <h2 className="section-title">
-            Solutions for <span>Growing Businesses</span>
+            Solutions built for
+            <span> modern businesses.</span>
           </h2>
-
-          <div className="solutions-grid">
-            <div className="solution-card reveal">
-              <div className="solution-icon">🤖</div>
-              <h3 className="solution-title">AI Agents</h3>
-              <p className="solution-desc">
-                Customer support, lead qualification, knowledge assistants and
-                task automation.
-              </p>
-            </div>
-
-            <div className="solution-card reveal reveal-delay-1">
-              <div className="solution-icon">⚙️</div>
-              <h3 className="solution-title">Business Automation</h3>
-              <p className="solution-desc">
-                Connect forms, databases, APIs, CRM systems, notifications and
-                AI workflows.
-              </p>
-            </div>
-
-            <div className="solution-card reveal reveal-delay-2">
-              <div className="solution-icon">💻</div>
-              <h3 className="solution-title">Custom Software</h3>
-              <p className="solution-desc">
-                Dashboards, POS systems, management platforms and internal
-                business tools.
-              </p>
-            </div>
-
-            <div className="solution-card reveal">
-              <div className="solution-icon">🌐</div>
-              <h3 className="solution-title">Web Applications</h3>
-              <p className="solution-desc">
-                Business websites, e-commerce platforms, booking systems and
-                web applications.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── AI AGENTS ─── */}
-      <section id="ai-agents">
-        <div className="container">
-          <div className="section-label">AI Automation</div>
-          <h2 className="section-title">
-            Your Business, <span>Working Smarter</span>
-          </h2>
-
-          <p style={{ maxWidth: 720, marginBottom: 32, color: "var(--text-secondary)" }}>
-            AI agents handle repetitive customer and business workflows while
-            keeping your team in control.
-          </p>
 
           <div className="projects-grid">
             <div className="project-card reveal">
+              <div className="project-img">
+                <div className="project-type">AI</div>
+                <div
+                  style={{
+                    padding: '60px 20px',
+                    fontSize: '60px',
+                    textAlign: 'center',
+                  }}
+                >
+                <img 
+                src="/project/ai-agent.png" 
+                alt="AI Agent"
+                className="project-image object-fit cover"/>
+                </div>
+              </div>
+
               <div className="project-body">
-                <div className="project-title">Customer Support Agent</div>
+                <div className="project-title">AI Agent Development</div>
                 <div className="project-desc">
-                  Answers common customer questions using your own business
-                  information and provides consistent responses around the clock.
+                  Build AI agents that communicate with customers,
+                  answer questions, qualify leads, handle bookings and
+                  support business operations.
                 </div>
                 <div className="project-tags">
                   <span className="tag">AI</span>
+                  <span className="tag">LLMs</span>
                   <span className="tag">RAG</span>
-                  <span className="tag">Knowledge Base</span>
+                  <span className="tag">Automation</span>
                 </div>
               </div>
             </div>
 
             <div className="project-card reveal reveal-delay-1">
+              <div className="project-img">
+                <div className="project-type">Automation</div>
+                <div
+                  style={{
+                    padding: '60px 20px',
+                    fontSize: '60px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <img 
+                src="/project/ai-agent.png" 
+                alt="AI Agent"
+                className="project-image object-fit cover"/>
+                </div>
+              </div>
+
               <div className="project-body">
-                <div className="project-title">Lead Qualification Agent</div>
+                <div className="project-title">Business Automation</div>
                 <div className="project-desc">
-                  Captures customer information, understands requirements,
-                  qualifies potential leads and sends structured data to your team.
+                  Connect your tools and automate repetitive workflows
+                  so your team can spend more time on valuable work.
                 </div>
                 <div className="project-tags">
-                  <span className="tag">AI Agent</span>
-                  <span className="tag">Lead Generation</span>
+                  <span className="tag">n8n</span>
+                  <span className="tag">APIs</span>
+                  <span className="tag">Webhooks</span>
                   <span className="tag">Automation</span>
                 </div>
               </div>
             </div>
 
             <div className="project-card reveal reveal-delay-2">
+              <div className="project-img">
+                <div className="project-type">Software</div>
+                <div
+                  style={{
+                    padding: '60px 20px',
+                    fontSize: '60px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <img 
+                src="/project/ai-agent.png" 
+                alt="AI Agent"
+                className="project-image object-fit cover"/>
+                </div>
+              </div>
+
               <div className="project-body">
-                <div className="project-title">Booking Agent</div>
+                <div className="project-title">Custom Web Applications</div>
                 <div className="project-desc">
-                  Helps customers with availability, collects booking details
-                  and connects the conversation to your booking workflow.
+                  Modern web applications, dashboards, customer portals
+                  and business management systems.
                 </div>
                 <div className="project-tags">
-                  <span className="tag">AI</span>
-                  <span className="tag">Bookings</span>
-                  <span className="tag">API</span>
+                  <span className="tag">Next.js</span>
+                  <span className="tag">React</span>
+                  <span className="tag">Node.js</span>
+                  <span className="tag">MongoDB</span>
                 </div>
+              </div>
+            </div>
+
+            <div className="project-card reveal">
+              <div className="project-img">
+                <div className="project-type">AI Solutions</div>
+                <div
+                   className="ai-solutions-img"
+                  // style={{
+                  //   padding: '60px 20px',
+                  //   fontSize: '60px',
+                  //   textAlign: 'center',
+                  // }}
+                >
+                  <AIBusinessIllustration />
+                </div>
+              </div>
+
+              <div className="project-body">
+                <div className="project-title">
+                  AI-Powered Business Solutions
+                </div>
+                <div className="project-desc">
+                  Add AI capabilities to existing business systems
+                  including intelligent search, assistants, document
+                  processing and knowledge retrieval.
+                </div>
+                <div className="project-tags">
+                  <span className="tag">OpenAI</span>
+                  <span className="tag">RAG</span>
+                  <span className="tag">Vector DB</span>
+                  <span className="tag">APIs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+      {/* ================= SERVICES ================= */}
+
+<section id="services">
+  <div className="container">
+    <div className="section-label">Our Services</div>
+
+    <h2 className="section-title">
+      Solutions built for
+      <span> modern businesses.</span>
+    </h2>
+
+    <div className="projects-grid">
+      {/* Card 1 — AI Agent Development */}
+      <div className="project-card reveal">
+        <div className="project-img service-img service-img-agent">
+          <div className="project-type">AI</div>
+          <AIAgentIllustration />
+        </div>
+
+        <div className="project-body">
+          <div className="project-title">AI Agent Development</div>
+          <div className="project-desc">
+            Build AI agents that communicate with customers, answer
+            questions, qualify leads, handle bookings and support
+            business operations.
+          </div>
+          <div className="project-tags">
+            <span className="tag">AI</span>
+            <span className="tag">LLMs</span>
+            <span className="tag">RAG</span>
+            <span className="tag">Automation</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Card 2 — Business Automation */}
+      <div className="project-card reveal reveal-delay-1">
+        <div className="project-img service-img service-img-automation">
+          <div className="project-type">Automation</div>
+          <BusinessAutomationIllustration />
+        </div>
+
+        <div className="project-body">
+          <div className="project-title">Business Automation</div>
+          <div className="project-desc">
+            Connect your tools and automate repetitive workflows so
+            your team can spend more time on valuable work.
+          </div>
+          <div className="project-tags">
+            <span className="tag">n8n</span>
+            <span className="tag">APIs</span>
+            <span className="tag">Webhooks</span>
+            <span className="tag">Automation</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Card 3 — Custom Web Applications */}
+      <div className="project-card reveal reveal-delay-2">
+        <div className="project-img service-img service-img-web">
+          <div className="project-type">Software</div>
+          <WebAppsIllustration />
+        </div>
+
+        <div className="project-body">
+          <div className="project-title">Custom Web Applications</div>
+          <div className="project-desc">
+            Modern web applications, dashboards, customer portals and
+            business management systems.
+          </div>
+          <div className="project-tags">
+            <span className="tag">Next.js</span>
+            <span className="tag">React</span>
+            <span className="tag">Node.js</span>
+            <span className="tag">MongoDB</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Card 4 — AI-Powered Business Solutions */}
+      <div className="project-card reveal">
+        <div className="project-img service-img service-img-solutions">
+          <div className="project-type">AI Solutions</div>
+          <AIBusinessIllustration />
+        </div>
+
+        <div className="project-body">
+          <div className="project-title">AI-Powered Business Solutions</div>
+          <div className="project-desc">
+            Add AI capabilities to existing business systems including
+            intelligent search, assistants, document processing and
+            knowledge retrieval.
+          </div>
+          <div className="project-tags">
+            <span className="tag">OpenAI</span>
+            <span className="tag">RAG</span>
+            <span className="tag">Vector DB</span>
+            <span className="tag">APIs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+      {/* ================= AI AGENTS ================= */}
+
+      <section id="ai-agents">
+        <div className="container">
+          <div className="section-label">AI Agents</div>
+
+          <h2 className="section-title">
+            Your business can
+            <span> work 24/7.</span>
+          </h2>
+
+          <p
+            style={{
+              // maxWidth: '720px',
+              margin: '0 auto 50px',
+              // textAlign: 'center',
+              color: 'var(--text-secondary)',
+            }}
+          >
+            AI agents can communicate with customers, capture leads,
+            answer questions and perform repetitive business tasks
+            automatically.
+          </p>
+
+          <div className="skills-grid">
+            <div className="skill-card reveal">
+              <div className="skill-icon"><RiCustomerService2Line /></div>
+              <div className="skill-name">Customer Support Agent</div>
+              <div className="skill-desc">
+                Answer customer questions instantly across your
+                website and digital channels.
+              </div>
+            </div>
+
+            <div className="skill-card reveal reveal-delay-1">
+              <div className="skill-icon"><GiDiceTarget /></div>
+              <div className="skill-name">Lead Generation Agent</div>
+              <div className="skill-desc">
+                Engage visitors, qualify prospects and capture
+                valuable leads automatically.
+              </div>
+            </div>
+
+            <div className="skill-card reveal reveal-delay-2">
+              <div className="skill-icon"><SiBookingdotcom /></div>
+              <div className="skill-name">Booking Agent</div>
+              <div className="skill-desc">
+                Allow customers to ask questions, select services and
+                request appointments.
+              </div>
+            </div>
+
+            <div className="skill-card reveal">
+              <div className="skill-icon"><FcWorkflow /></div>
+              <div className="skill-name">Workflow Agent</div>
+              <div className="skill-desc">
+                Connect AI with your business systems and automate
+                multi-step workflows.
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── CASE STUDIES ─── */}
+      {/* ================= WHO WE HELP ================= */}
+
+      <section id="solutions">
+        <div className="container">
+          <div className="section-label">Who We Help</div>
+
+          <h2 className="section-title">
+            Technology for <span>growing businesses.</span>
+          </h2>
+
+          <p className="solutions-subtitle">
+            We build AI agents, automation workflows, and custom
+            software for teams who want to reduce manual work and
+            scale faster.
+          </p>
+
+          <div className="solution-grid">
+            <div className="solution-card reveal">
+              <div className="solution-card-icon">🏪</div>
+              <h3 className="solution-card-title">Small Businesses</h3>
+              <p className="solution-card-desc">
+                Automate operations and customer communication without
+                hiring a larger team.
+              </p>
+            </div>
+
+            <div className="solution-card reveal reveal-delay-1">
+              <div className="solution-card-icon">🛠️</div>
+              <h3 className="solution-card-title">Service Businesses</h3>
+              <p className="solution-card-desc">
+                Leads, bookings, and customer support handled by AI
+                agents around the clock.
+              </p>
+            </div>
+
+            <div className="solution-card reveal reveal-delay-2">
+              <div className="solution-card-icon">🛒</div>
+              <h3 className="solution-card-title">E-commerce</h3>
+              <p className="solution-card-desc">
+                AI customer support, order enquiries, and business
+                automation built into your store.
+              </p>
+            </div>
+
+            <div className="solution-card reveal">
+              <div className="solution-card-icon">🚀</div>
+              <h3 className="solution-card-title">Startups</h3>
+              <p className="solution-card-desc">
+                MVPs, SaaS platforms, and scalable systems engineered
+                for speed to market.
+              </p>
+            </div>
+
+            <div className="solution-card reveal reveal-delay-1">
+              <div className="solution-card-icon">🏥</div>
+              <h3 className="solution-card-title">Healthcare</h3>
+              <p className="solution-card-desc">
+                Digital systems, patient enquiry handling, and
+                intelligent appointment workflows.
+              </p>
+            </div>
+
+            <div className="solution-card reveal reveal-delay-2">
+              <div className="solution-card-icon">💼</div>
+              <h3 className="solution-card-title">Professional Services</h3>
+              <p className="solution-card-desc">
+                Automate enquiries, internal workflows, and reporting
+                for consultants, agencies, and firms.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= PROJECTS ================= */}
+
       <section id="projects">
         <div className="container">
           <div className="section-label">Our Work</div>
+
           <h2 className="section-title">
-            Selected <span>Case Studies</span>
+            Selected <span>Projects</span>
           </h2>
 
-          {/* <div className="projects-grid">
+          <div className="projects-grid">
             <div
               className="project-card reveal"
-              onClick={() => window.open('https://aj-website-alpha.vercel.app/', '_blank')}
+              onClick={() =>
+                window.open('https://grocery-tau-sooty.vercel.app', '_blank')
+              }
               style={{ cursor: 'pointer' }}
             >
               <div className="project-img">
-                <img src="/image/AJ_saloon.png" alt="AJ Saloon Web Application" className="project-image" />
-                <div className="project-type">Website</div>
+                <img
+                  src="/Project/grocery.png"
+                  alt="Grocery Delivery Application"
+                  className="project-image"
+                />
+                <div className="project-type">Web Application</div>
               </div>
+
               <div className="project-body">
-                <div className="project-title">AJ Saloon Web Application</div>
+                <div className="project-title">Grocery Application</div>
                 <div className="project-desc">
-                  A full-stack web application for AJ Salon featuring online appointment
-                  booking, customer management, and secure cloud-based booking management.
+                  A business website with online ordering and delivery system for a local grocery store.
                 </div>
                 <div className="project-tags">
                   <span className="tag">Next.js</span>
-                  <span className="tag">React.js</span>
+                  <span className="tag">React</span>
                   <span className="tag">JavaScript</span>
                 </div>
-                <div className="project-cta">View Website</div>
+                <div className="project-cta">Live View</div>
               </div>
             </div>
 
-            <Link href="/eventstune-details">
+            <Link href="https://v0-vila-resort-booking.vercel.app/">
               <div className="project-card reveal reveal-delay-1">
                 <div className="project-img">
-                  <img src="/image/project/event tune.jpg" alt="Eventstune.lk" className="project-image" />
-                  <div className="project-type">Website</div>
+                  <img
+                    src="/Project/vila.png"
+                    alt="Eventstune"
+                    className="project-image"
+                  />
+                  <div className="project-type">Platform</div>
                 </div>
+
                 <div className="project-body">
-                  <div className="project-title">Eventstune.lk</div>
+                  <div className="project-title">Villa Resort</div>
                   <div className="project-desc">
-                    An event discovery and ticketing platform for Sri Lanka — browse, book
-                    and manage event listings seamlessly.
+                    Event discovery and ticketing platform designed for
+                    discovering and managing events.
                   </div>
                   <div className="project-tags">
                     <span className="tag">HTML</span>
@@ -453,343 +781,333 @@ const handleSubmit = async (e) => {
                     <span className="tag">JavaScript</span>
                     <span className="tag">PHP</span>
                   </div>
-                  <div className="project-cta">View Details</div>
+                  <div className="project-cta">Live View</div>
                 </div>
               </div>
             </Link>
 
-            <Link href="/safelink-details">
+            <Link href="https://github.com/Malka01/Week-dashboard">
               <div className="project-card reveal reveal-delay-2">
                 <div className="project-img">
-                  <img src="/image/project/safelink.jpg" alt="SafeLink App" className="project-image" />
-                  <div className="project-type">Mobile App</div>
+                  <div
+                    style={{
+                      padding: '60px 20px',
+                      fontSize: '60px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    📊
+                  </div>
+                  <div className="project-type">AI Dashboard</div>
                 </div>
+
                 <div className="project-body">
-                  <div className="project-title">SafeLink App</div>
+                  <div className="project-title">
+                    Weekly Report & AI Dashboard
+                  </div>
                   <div className="project-desc">
-                    An emergency response mobile application with automatic accident
-                    detection, satellite communication and real-time emergency support.
+                    A full-stack reporting platform with team
+                    dashboards, analytics and an AI-powered assistant
+                    for report insights.
+                  </div>
+                  <div className="project-tags">
+                    <span className="tag">MERN</span>
+                    <span className="tag">Pinocorn</span>
+                    <span className="tag">LLM/RAG</span>
+                    <span className="tag">OpenAI</span>
+                  </div>
+                  <div className="project-cta">View Project</div>
+                </div>
+              </div>
+            </Link>
+
+            <Link href="#">
+              <div className="project-card reveal">
+                <div className="project-img">
+                  <img
+                    src="/Project/ai-agent.png"
+                    alt="Ai Agent"
+                    className="project-image"
+                  />
+                  <div className="project-type">Web App</div>
+                </div>
+
+                <div className="project-body">
+                  <div className="project-title">SafeLink</div>
+                  <div className="project-desc">
+                    An emergency response application designed around
+                    accident detection and real-time emergency
+                    communication.
                   </div>
                   <div className="project-tags">
                     <span className="tag">UI/UX</span>
                     <span className="tag">Mobile</span>
+                    <span className="tag">IoT</span>
                   </div>
-                  <div className="project-cta">View Details</div>
+                  <div className="project-cta">Ongoing</div>
                 </div>
               </div>
             </Link>
-
-            <Link href="/apparel-details">
-              <div className="project-card reveal">
-                <div className="project-img">
-                  <img src="/image/project/apperal.jpg" alt="Apparel Printing Management System" className="project-image" />
-                  <div className="project-type">Web Application</div>
-                </div>
-                <div className="project-body">
-                  <div className="project-title">Apparel Printing Management System</div>
-                  <div className="project-desc">
-                    A web-based management system digitizing and streamlining business
-                    operations for an apparel printing company.
-                  </div>
-                  <div className="project-tags">
-                    <span className="tag">Dashboard</span>
-                    <span className="tag">System Design</span>
-                  </div>
-                  <div className="project-cta">View Details</div>
-                </div>
-              </div>
-            </Link>
-
-            <Link href="/smart-baby-room-details">
-              <div className="project-card reveal reveal-delay-1">
-                <div className="project-img">
-                  <img src="/image/project/baby room.png" alt="Smart Baby Room" className="project-image" />
-                  <div className="project-type">IoT</div>
-                </div>
-                <div className="project-body">
-                  <div className="project-title">Smart Baby Room</div>
-                  <div className="project-desc">
-                    An IoT system monitoring a baby&apos;s room environment — temperature,
-                    humidity, sound — with Telegram Bot alerts for parents.
-                  </div>
-                  <div className="project-tags">
-                    <span className="tag">Arduino</span>
-                    <span className="tag">Sensors</span>
-                    <span className="tag">Telegram Bot</span>
-                  </div>
-                  <div className="project-cta">View Details</div>
-                </div>
-              </div>
-            </Link>
-
-            <Link href="/gobus-details">
-              <div className="project-card reveal reveal-delay-2">
-                <div className="project-img">
-                  <img src="/image/project/gobus.png" alt="GO BUS Mobile App" className="project-image" />
-                  <div className="project-type">Mobile App</div>
-                </div>
-                <div className="project-body">
-                  <div className="project-title">GO BUS Mobile App</div>
-                  <div className="project-desc">
-                    A modern bus tracking and booking app for Sri Lanka — real-time routes,
-                    seat selection and live arrival updates.
-                  </div>
-                  <div className="project-tags">
-                    <span className="tag">Mobile</span>
-                    <span className="tag">Transit</span>
-                  </div>
-                  <div className="project-cta">View Details</div>
-                </div>
-              </div>
-            </Link>
-
-            <Link href="/neohouse-details">
-              <div className="project-card reveal">
-                <div className="project-img">
-                  <img src="/image/project/airline.png" alt="Sri Lanka Airline Website" className="project-image" />
-                  <div className="project-type">Website</div>
-                </div>
-                <div className="project-body">
-                  <div className="project-title">Sri Lanka Airline Website</div>
-                  <div className="project-desc">
-                    A modern airline website concept with flight booking, check-in and
-                    travel information features.
-                  </div>
-                  <div className="project-tags">
-                    <span className="tag">UI/UX Design</span>
-                    <span className="tag">Web Design</span>
-                  </div>
-                  <div className="project-cta">View Details</div>
-                </div>
-              </div>
-            </Link>
-
-            <Link href="/carlos-publishers-details">
-              <div className="project-card reveal">
-                <div className="project-img">
-                  <img src="/image/project/apperal.jpg" alt="Carlos Publishers Website Redesign" className="project-image" />
-                  <div className="project-type">Website</div>
-                </div>
-                <div className="project-body">
-                  <div className="project-title">Carlos Publishers Website Redesign</div>
-                  <div className="project-desc">
-                    Redesigned the Carlos Publishers website to improve responsiveness,
-                    visual consistency, usability and overall user experience.
-                  </div>
-                  <div className="project-tags">
-                    <span className="tag">UI/UX Design</span>
-                    <span className="tag">Responsive</span>
-                  </div>
-                  <div className="project-cta">View Details</div>
-                </div>
-              </div>
-            </Link>
-          </div> */}
+          </div>
         </div>
       </section>
 
-      {/* ─── HOW WE WORK ─── */}
+      {/* ================= TECHNOLOGY ================= */}
+
+      <section id="technology">
+        <div className="container">
+          <div className="section-label">Technology</div>
+
+          <h2 className="section-title">
+            Built with <span>modern technology.</span>
+          </h2>
+
+          <div className="tools-grid">
+            <div className="tool-card"><div className="tool-name">Next.js</div></div>
+            <div className="tool-card"><div className="tool-name">React</div></div>
+            <div className="tool-card"><div className="tool-name">Node.js</div></div>
+            <div className="tool-card"><div className="tool-name">MongoDB</div></div>
+            <div className="tool-card"><div className="tool-name">Python</div></div>
+            <div className="tool-card"><div className="tool-name">OpenAI</div></div>
+            <div className="tool-card"><div className="tool-name">n8n</div></div>
+            <div className="tool-card"><div className="tool-name">REST APIs</div></div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= PROCESS ================= */}
+
       <section id="process">
         <div className="container">
           <div className="section-label">Our Process</div>
+
           <h2 className="section-title">
-            From Idea to <span>Automation</span>
+            From idea to <span>working solution.</span>
           </h2>
 
-          <div className="skills-grid">
-            <div className="skill-card reveal">
-              <div className="skill-icon">01</div>
-              <div className="skill-name">Discover</div>
-              <div className="skill-desc">
-                Understand your business, customers and repetitive workflows.
-              </div>
+          <div className="process-grid">
+            <div className="process-step reveal">
+              <span className="process-num">01</span>
+              <h3 className="process-title">Discover</h3>
+              <p className="process-desc">
+                Understand your business, customers, and biggest
+                operational challenges.
+              </p>
             </div>
 
-            <div className="skill-card reveal reveal-delay-1">
-              <div className="skill-icon">02</div>
-              <div className="skill-name">Design</div>
-              <div className="skill-desc">
-                Design the solution and define the automation workflow.
-              </div>
+            <div className="process-step reveal reveal-delay-1">
+              <span className="process-num">02</span>
+              <h3 className="process-title">Design</h3>
+              <p className="process-desc">
+                Define the solution architecture and user experience.
+              </p>
             </div>
 
-            <div className="skill-card reveal reveal-delay-2">
-              <div className="skill-icon">03</div>
-              <div className="skill-name">Build</div>
-              <div className="skill-desc">
-                Develop the AI agent, software or web application.
-              </div>
+            <div className="process-step reveal reveal-delay-2">
+              <span className="process-num">03</span>
+              <h3 className="process-title">Build</h3>
+              <p className="process-desc">
+                Develop the application, AI agent, or automation
+                workflow.
+              </p>
             </div>
 
-            <div className="skill-card reveal">
-              <div className="skill-icon">04</div>
-              <div className="skill-name">Automate</div>
-              <div className="skill-desc">
-                Connect the system with your existing business workflow.
-              </div>
+            <div className="process-step reveal reveal-delay-3">
+              <span className="process-num">04</span>
+              <h3 className="process-title">Integrate</h3>
+              <p className="process-desc">
+                Connect your existing tools, APIs, and business
+                systems.
+              </p>
+            </div>
+
+            <div className="process-step reveal reveal-delay-4">
+              <span className="process-num">05</span>
+              <h3 className="process-title">Launch</h3>
+              <p className="process-desc">
+                Test, deploy, and continuously improve the solution.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── UPCOMING ─── */}
-      <section id="upcoming-projects" className="upcoming-section">
-        <div className="section-title">
-          <h2>Upcoming Projects</h2>
-          <p>
-            A preview of ongoing work where AI and software concepts evolve into
-            functional, business-ready solutions.
-          </p>
-        </div>
+      {/* ================= CTA ================= */}
 
-        {/* <div className="upcoming-card">
-          <div className="upcoming-media">
-            <div className="upcoming-image desktop-img" aria-hidden="true">
-              <Image
-                src="/image/srilanka.png"
-                alt="Sri Lanka"
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 1300px"
-                className="upcoming-image-content"
-              />
-            </div>
+      <section id="cta">
+        <div className="container">
+          <div className="about-text reveal">
+            <div className="section-label">Start Building</div>
 
-            <div className="upcoming-image mobile-img" aria-hidden="true">
-              <Image
-                src="/image/srilanka-mobile1.png"
-                alt="Sri Lanka Mobile"
-                fill
-                sizes="(max-width: 768px) 100vw, 600px"
-                className="upcoming-image-content"
-              />
-            </div>
-          </div>
+            <h2 className="section-title">
+              Have a business problem?
+              <span> Let&apos;s solve it.</span>
+            </h2>
 
-          <div className="overlay">
-            <span className="status">Coming Soon</span>
-            <h3>Rebuild Lanka</h3>
             <p>
-              A smart community reporting platform enabling citizens to report
-              public issues, track resolutions and collaborate with local
-              authorities to build better communities.
+              Whether you need an AI agent, business automation
+              workflow, custom application or AI-powered feature,
+              let&apos;s discuss what you want to build.
             </p>
-            <div className="tech">AI • Next.js • React.js</div>
+
+            <div className="hero-actions">
+              <a href="#contact" className="btn btn-primary">
+                Talk to Cybernaxe
+              </a>
+
+              <a
+                href="https://www.linkedin.com/company/cybernaxe-solutions"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary"
+              >
+                Follow Us on LinkedIn
+              </a>
+            </div>
           </div>
-        </div> */}
+        </div>
       </section>
 
-      {/* ─── CONTACT ─── */}
+      {/* ================= CONTACT ================= */}
+
       <section id="contact">
         <div className="container">
-          <div className="section-label">Start a Project</div>
+          <div className="section-label">Contact</div>
+
           <h2 className="section-title">
-            Let&apos;s Build Something <span>Smarter</span>
+            Let&apos;s <span>build something.</span>
           </h2>
 
           <div className="contact-grid">
             <div className="contact-info reveal">
               <p>
-                Have a repetitive business process, customer communication problem,
-                booking workflow or software idea? Tell us what you&apos;re trying to solve.
-                We&apos;ll explore how AI and modern software can help.
+                Have a project, automation idea or business problem
+                you&apos;d like to solve? Send us a message and let&apos;s
+                explore the right solution.
               </p>
 
               <div className="contact-items">
                 <div className="contact-item">
-                  <div className="contact-icon">
-                    <Image src="/image/icon/mail1.gif" alt="Email" width={24} height={24} unoptimized />
-                  </div>
+                  <div className="contact-icon"><FaSquareWhatsapp /></div>
                   <div>
-                    <div className="contact-item-label">Email</div>
-                    <div className="contact-item-value">cybernaxesolutions@gmail.com</div>
-                  </div>
-                </div>
-
-                <div className="contact-item">
-                  <div className="contact-icon">
-                    <Image src="/image/icon/whatsapp.gif" alt="WhatsApp" width={24} height={24} unoptimized />
-                  </div>
-                  <div>
-                    <div className="contact-item-label">Phone / WhatsApp</div>
-                    <div className="contact-item-value">+94 770202138</div>
-                  </div>
-                </div>
-
-                <div className="contact-item">
-                  <div className="contact-icon">
-                    <Image src="/image/icon/location.gif" alt="Location" width={24} height={24} unoptimized />
-                  </div>
-                  <div>
-                    <div className="contact-item-label">Location</div>
-                    <div className="contact-item-value">Colombo, Sri Lanka</div>
+                    <div className="contact-item-label">WhatsApp</div>
+                    <div className="contact-item-value">
+                      Let&apos;s discuss your project
+                    </div>
                   </div>
                 </div>
 
                 <a
-                  href="https://www.linkedin.com/company/cybernaxe-solutions/"
+                  href="https://www.linkedin.com/company/cybernaxe-solutions"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="contact-item"
                 >
-                  <div className="contact-icon">
-                    <Image src="/image/icon/linkedin.gif" alt="LinkedIn" width={24} height={24} unoptimized />
-                  </div>
+                  <div className="contact-icon"><FaLinkedin /></div>
                   <div>
                     <div className="contact-item-label">LinkedIn</div>
-                    <div className="contact-item-value">Cybernaxe Solutions</div>
+                    <div className="contact-item-value">
+                      Cybernaxe Solutions
+                    </div>
                   </div>
                 </a>
+
+                <div className="contact-item">
+                  <div className="contact-icon"><BiWorld /></div>
+                  <div>
+                    <div className="contact-item-label">Location</div>
+                    <div className="contact-item-value">
+                      Sri Lanka • Serving Global Clients
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <form className="contact-form reveal reveal-delay-2" id="contactForm" onSubmit={handleSubmit}>
+            <form
+              className="contact-form reveal reveal-delay-2"
+              onSubmit={handleSubmit}
+            >
               <div className="form-row">
                 <div className="form-group">
-                  <input type="text" id="name" name="name" placeholder=" " autoComplete="off" required />
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder=" "
+                    autoComplete="off"
+                    required
+                  />
                   <label htmlFor="name">Your Name</label>
                 </div>
 
                 <div className="form-group">
-                  <input type="email" id="email" name="email" placeholder=" " autoComplete="off" required />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder=" "
+                    autoComplete="off"
+                    required
+                  />
                   <label htmlFor="email">Email Address</label>
                 </div>
               </div>
 
               <div className="form-group">
-                <input type="text" id="subject" name="subject" placeholder=" " autoComplete="off" />
-                <label htmlFor="subject">What can we help you automate?</label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  placeholder=" "
+                  autoComplete="off"
+                />
+                <label htmlFor="subject">What do you need?</label>
               </div>
 
               <div className="form-group textarea">
-                <textarea id="message" name="message" placeholder=" " required />
-                <label htmlFor="message">Tell us about your business or project</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder=" "
+                  required
+                />
+                <label htmlFor="message">
+                  Tell us about your project
+                </label>
               </div>
 
-              <button type="submit" className="btn-submit" disabled={isSending}>
-                <svg width={16} height={16} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-                </svg>
-                {isSending ? "Sending..." : "Send Message"}
+              <button
+                type="submit"
+                className="btn-submit"
+                disabled={isSending}
+              >
+                {isSending ? 'Sending...' : 'Start a Conversation'}
               </button>
             </form>
           </div>
         </div>
       </section>
 
-      {/* Toast */}
+      {/* ================= FOOTER ================= */}
+      <Footer />
+
+      {/* ================= TOAST ================= */}
+
       <div className="toast" id="toast">
         <div className="toast-icon" id="toastIcon" />
         <div>
           <div className="toast-title" id="toastTitle" />
           <div className="toast-sub" id="toastSub" />
         </div>
-        <div className="toast-close" onClick={closeToast}>✕</div>
+        <div className="toast-close" onClick={closeToast}>
+          ✕
+        </div>
       </div>
 
-      {/* Floating Actions */}
+      {/* ================= FLOATING ACTIONS ================= */}
+
       <div className="floating-actions">
-        {/* WhatsApp */}
         <a
           href="https://wa.me/94770202138"
           target="_blank"
@@ -801,34 +1119,40 @@ const handleSubmit = async (e) => {
               <path d="M20.52 3.48A11.8 11.8 0 0012.06 0C5.51 0 .2 5.31.2 11.86c0 2.09.55 4.14 1.6 5.94L0 24l6.38-1.67a11.8 11.8 0 005.68 1.45h.01c6.55 0 11.86-5.31 11.86-11.86 0-3.16-1.23-6.13-3.41-8.34zM12.07 21.5h-.01a9.6 9.6 0 01-4.88-1.33l-.35-.21-3.78.99 1.01-3.68-.23-.38a9.6 9.6 0 01-1.47-5.1c0-5.3 4.31-9.6 9.61-9.6 2.57 0 4.98 1 6.8 2.83a9.57 9.57 0 012.8 6.78c0 5.3-4.31 9.6-9.6 9.6zm5.28-7.2c-.29-.14-1.7-.84-1.96-.94-.26-.1-.45-.14-.64.14-.19.29-.74.94-.9 1.13-.17.19-.33.21-.61.07-.29-.14-1.22-.45-2.32-1.43-.86-.76-1.44-1.7-1.61-1.99-.17-.29-.02-.45.13-.59.13-.13.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.55-.88-2.12-.23-.55-.47-.47-.64-.48h-.55c-.19 0-.5.07-.76.36-.26.29-1 1-1 2.43s1.02 2.82 1.17 3.01c.14.19 2.05 3.14 4.98 4.4.7.3 1.24.48 1.66.61.7.22 1.34.19 1.85.12.56-.08 1.7-.7 1.94-1.38.24-.68.24-1.27.17-1.38-.07-.11-.26-.17-.55-.31z" />
             </svg>
           </div>
-          <span className="whatsapp-badge">Talk to us</span>
+          <span className="whatsapp-badge">Let&apos;s Talk</span>
         </a>
 
-        {/* Chatbot Overlay */}
+        {/* Chatbot overlay */}
         <div
-          className={`chatbot-overlay ${chatOpen ? "show" : ""}`}
+          className={`chatbot-overlay ${chatOpen ? 'show' : ''}`}
           onClick={closeChat}
         />
 
-        {/* Chatbot Modal */}
-        <div className={`chatbot-modal ${chatOpen ? "show" : ""}`}>
+        {/* Chatbot modal */}
+        <div className={`chatbot-modal ${chatOpen ? 'show' : ''}`}>
           <div className="chatbot-header">
             <div className="chatbot-title-area">
-              <img src="/image/icon/bot.svg" alt="Bot" className="chatbot-bot-icon" />
-              <h3 className="chatbot-title">Cybernaxe Agent</h3>
+              <img
+                src="/image/icon/bot.svg"
+                alt="AI Assistant"
+                className="chatbot-bot-icon"
+              />
+              <h3 className="chatbot-title">Cybernaxe AI Assistant</h3>
             </div>
-            <button className="chatbot-close" onClick={closeChat}>✕</button>
+
+            <button className="chatbot-close" onClick={closeChat}>
+              ✕
+            </button>
           </div>
 
           <div className="chatbot-body">
             <div className="chatbot-message">
-              <h2>👋 Hi! I&apos;m Cybernaxe Agent.</h2>
+              <h2>👋 Hello!</h2>
               <p>
-                I can help you explore our AI automation, software development,
-                web applications and business solutions.
-              </p>
-              <p>
-                Tell me about your business or the process you&apos;d like to automate.
+                I&apos;m the Cybernaxe AI Assistant.
+                <br />
+                Ask us about our services, AI agents, automation or
+                software solutions.
               </p>
             </div>
           </div>
@@ -837,24 +1161,34 @@ const handleSubmit = async (e) => {
             <input
               type="text"
               className="chatbot-input"
-              // placeholder="Ask about our services..."
-              placeholder="Currently Chatbot under development phase.."
+              placeholder="Ask about Cybernaxe..."
             />
             <button className="chatbot-send">Send</button>
           </div>
         </div>
 
-        {/* Chatbot Icon */}
-        <div className="chatbot-icon" id="chatbotIcon" onClick={openChat}>
-          <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-            <rect x={5} y={8} width={14} height={12} rx={2} />
-            <circle cx={10} cy={11} r="1.5" fill="currentColor" />
-            <circle cx={14} cy={11} r="1.5" fill="currentColor" />
-            <line x1={8} y1={8} x2={8} y2={4} />
-            <circle cx={8} cy={3} r={1} fill="currentColor" />
-            <line x1={16} y1={8} x2={16} y2={4} />
-            <circle cx={16} cy={3} r={1} fill="currentColor" />
-            <path d="M10 15 Q12 16 14 15" stroke="currentColor" strokeWidth="1.5" fill="none" />
+        <div className="chatbot-icon" onClick={openChat}>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <rect x="5" y="8" width="14" height="12" rx="2" />
+            <circle cx="10" cy="11" r="1.5" fill="currentColor" />
+            <circle cx="14" cy="11" r="1.5" fill="currentColor" />
+            <line x1="8" y1="8" x2="8" y2="4" />
+            <circle cx="8" cy="3" r="1" fill="currentColor" />
+            <line x1="16" y1="8" x2="16" y2="4" />
+            <circle cx="16" cy="3" r="1" fill="currentColor" />
+            <path
+              d="M10 15 Q12 16 14 15"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              fill="none"
+            />
           </svg>
           <span className="chat-badge">AI</span>
         </div>
