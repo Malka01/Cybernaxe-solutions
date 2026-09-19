@@ -2,28 +2,27 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenu = () => setMenuOpen(prev => !prev);
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
   const closeMenu = () => setMenuOpen(false);
 
   const navLinks = [
-    { label: "About", href: "#about" },
-    { label: "AI Agents", href: "#ai-agents" },
-    { label: "Solutions", href: "#solutions" },
-    { label: "Case Studies", href: "#projects" },
-    { label: "Process", href: "#process" },
-    { label: "Contact", href: "#contact", isCTA: true },
+    { label: 'About', href: '#about' },
+    { label: 'Services', href: '#services' },
+    { label: 'AI Agents', href: '#ai-agents' },
+    { label: 'Who We Help', href: '#solutions' },
+    { label: 'Work', href: '#projects' },
+    { label: 'Contact', href: '#contact', isCTA: true },
   ];
 
   return (
     <>
       <nav id="navbar">
         <div className="nav-inner">
-
           {/* Logo */}
           <a href="/" className="nav-logo" onClick={closeMenu}>
             <img
@@ -39,7 +38,7 @@ export default function Navbar() {
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className={link.isCTA ? "nav-cta" : ""}
+                  className={link.isCTA ? 'nav-cta' : ''}
                 >
                   {link.label}
                 </a>
@@ -57,24 +56,25 @@ export default function Navbar() {
           </a>
 
           {/* Hamburger */}
-          <div className="hamburger" onClick={toggleMenu}>
-            <img
-              src="/image/icon/menu.svg"
-              alt="Menu"
-              className="hamburger-icon"
-            />
+          <div
+            className={`hamburger ${menuOpen ? 'open' : ''}`}
+            onClick={toggleMenu}
+          >
+            <span />
+            <span />
+            <span />
           </div>
         </div>
       </nav>
 
       {/* Mobile Menu */}
-      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
         {navLinks.map((link) => (
           <a
             key={link.href}
             href={link.href}
             onClick={closeMenu}
-            className={link.isCTA ? "nav-cta" : ""}
+            className={link.isCTA ? 'nav-cta' : ''}
           >
             {link.label}
           </a>
