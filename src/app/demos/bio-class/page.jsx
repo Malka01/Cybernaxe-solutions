@@ -9,6 +9,7 @@ import '../../../../public/nimna-tuition.css';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import CommentWidget from '@/components/CommentWidget';
 
 // =========================================================
 // CONFIG
@@ -1644,23 +1645,6 @@ const galleryItems = galleryItemsData[lang];
 
           <div className="nt-contact-grid">
             <div className="nt-contact-info">
-              {/* <a
-                href={WhatsAppLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nt-contact-card"
-                // nt-contact-card-primary"
-              >
-                <div className="nt-contact-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.52 3.48A11.8 11.8 0 0012.06 0C5.51 0 .2 5.31.2 11.86c0 2.09.55 4.14 1.6 5.94L0 24l6.38-1.67a11.8 11.8 0 005.68 1.45h.01c6.55 0 11.86-5.31 11.86-11.86 0-3.16-1.23-6.13-3.41-8.34z" />
-                  </svg>
-                </div>
-                <div>
-                  <strong>{t.contactWhatsapp}</strong>
-                  <span>+94 77 020 2138</span>
-                </div>
-              </a> */}
 
               <div className="nt-contact-card">
                 <div className="nt-contact-icon">📞</div>
@@ -1789,13 +1773,6 @@ const galleryItems = galleryItemsData[lang];
               <p>{t.footerTagline}</p>
             </div>
 
-            {/* <div className="nt-footer-col">
-              <h4>{t.footerColClasses}</h4>
-              <a href="#classes">{t.navClasses}</a>
-              <a href="#schedule">{t.navSchedule}</a>
-              <a href="#research">{t.navResearch}</a>
-            </div> */}
-
             <div className="nt-footer-col">
   <h4>{t.footerColClasses}</h4>
   <a href="#classes">{t.navClasses}</a>
@@ -1854,6 +1831,8 @@ const galleryItems = galleryItemsData[lang];
           {toast.text}
         </div>
       )}
+      {/* ═══ FLOATING COMMENT WIDGET ═══ */}
+      <CommentWidget />
     </>
   );
 }

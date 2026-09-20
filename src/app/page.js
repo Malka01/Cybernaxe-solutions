@@ -9,7 +9,7 @@ import Script from 'next/script';
 import Link from 'next/link';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/Footer';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AITransformation from '@/components/AITransformation';
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { TbAutomation } from "react-icons/tb";
@@ -28,6 +28,14 @@ import BusinessAutomationIllustration from '@/components/BusinessAutomationIllus
 import WebAppsIllustration from '@/components/WebAppsIllustration';
 import BusinessWebsitesIllustration from '@/components/BusinessWebsitesIllustration';
 import UIUXDesignIllustration from '@/components/UIUXDesignIllustration';
+// import CommentWidget from '@/components/CommentWidget';
+
+
+import {
+  SUGGESTED_QUESTIONS,
+  findAnswer,
+  FALLBACK_ANSWER,
+} from '@/data/chatbotQA';
 
 export default function Home() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -35,6 +43,60 @@ export default function Home() {
 
   const openChat = () => setChatOpen(true);
   const closeChat = () => setChatOpen(false);
+
+  // ─── Chat state ───
+  const [chatMessages, setChatMessages] = useState([
+    {
+      role: 'assistant',
+      content:
+        "👋 Hi! I'm the Cybernaxe AI Assistant.\n\nAsk me anything about our services, pricing, or how we work. Or tap a suggestion below to get started.",
+      isIntro: true,
+    },
+  ]);
+  const [chatInput, setChatInput] = useState('');
+  const [chatLoading, setChatLoading] = useState(false);
+  const chatBodyRef = useRef(null);
+
+  // Auto-scroll to bottom on new message
+  useEffect(() => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  }, [chatMessages, chatLoading]);
+
+  // ─── Send handler (predefined Q&A) ───
+  const handleChatSend = (text) => {
+    const message = (text || chatInput).trim();
+    if (!message || chatLoading) return;
+
+    // Add user message
+    setChatMessages((prev) => [...prev, { role: 'user', content: message }]);
+    setChatInput('');
+    setChatLoading(true);
+
+    // Simulate typing delay (feels natural)
+    const delay = 400 + Math.random() * 400;
+
+    setTimeout(() => {
+      const answer = findAnswer(message) || FALLBACK_ANSWER;
+      setChatMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: answer },
+      ]);
+      setChatLoading(false);
+    }, delay);
+  };
+
+  const handleChatKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleChatSend();
+    }
+  };
+
+  const handleSuggestedQuestion = (question) => {
+    handleChatSend(question);
+  };
 
   const showToast = (type, icon, title, sub) => {
     if (
@@ -334,14 +396,14 @@ export default function Home() {
       </section>
       {/* ================= SERVICES ================= */}
 
-<section id="services">
-  <div className="container">
-    <div className="section-label">Our Services</div>
+      <section id="services">
+        <div className="container">
+          <div className="section-label">Our Services</div>
 
-    <h2 className="section-title">
-      Solutions built for
-      <span> modern businesses.</span>
-    </h2>
+          <h2 className="section-title">
+            Solutions built for
+            <span> modern businesses.</span>
+          </h2>
 
           <div className="projects-grid">
 
@@ -370,92 +432,92 @@ export default function Home() {
             {/* Card 2 — AI Agent Development */}
             <div className="project-card reveal">
               <div className="project-img service-img service-img-agent">
-          <div className="project-type">AI</div>
-          <AIAgentIllustration />
-        </div>
+                <div className="project-type">AI</div>
+                <AIAgentIllustration />
+              </div>
 
-        <div className="project-body">
-          <div className="project-title">AI Agent Development</div>
-          <div className="project-desc">
-            Build AI agents that communicate with customers, answer
-            questions, qualify leads, handle bookings and support
-            business operations.
-          </div>
-          <div className="project-tags">
-            <span className="tag">AI</span>
-            <span className="tag">LLMs</span>
-            <span className="tag">RAG</span>
-            <span className="tag">Automation</span>
-          </div>
-        </div>
-      </div>
+              <div className="project-body">
+                <div className="project-title">AI Agent Development</div>
+                <div className="project-desc">
+                  Build AI agents that communicate with customers, answer
+                  questions, qualify leads, handle bookings and support
+                  business operations.
+                </div>
+                <div className="project-tags">
+                  <span className="tag">AI</span>
+                  <span className="tag">LLMs</span>
+                  <span className="tag">RAG</span>
+                  <span className="tag">Automation</span>
+                </div>
+              </div>
+            </div>
 
-      {/* Card 3 — Business Automation */}
-      <div className="project-card reveal reveal-delay-1">
-        <div className="project-img service-img service-img-automation">
-          <div className="project-type">Automation</div>
-          <BusinessAutomationIllustration />
-        </div>
+            {/* Card 3 — Business Automation */}
+            <div className="project-card reveal reveal-delay-1">
+              <div className="project-img service-img service-img-automation">
+                <div className="project-type">Automation</div>
+                <BusinessAutomationIllustration />
+              </div>
 
-        <div className="project-body">
-          <div className="project-title">Business Automation</div>
-          <div className="project-desc">
-            Connect your tools and automate repetitive workflows so
-            your team can spend more time on valuable work.
-          </div>
-          <div className="project-tags">
-            <span className="tag">n8n</span>
-            <span className="tag">APIs</span>
-            <span className="tag">Webhooks</span>
-            <span className="tag">Automation</span>
-          </div>
-        </div>
-      </div>
+              <div className="project-body">
+                <div className="project-title">Business Automation</div>
+                <div className="project-desc">
+                  Connect your tools and automate repetitive workflows so
+                  your team can spend more time on valuable work.
+                </div>
+                <div className="project-tags">
+                  <span className="tag">n8n</span>
+                  <span className="tag">APIs</span>
+                  <span className="tag">Webhooks</span>
+                  <span className="tag">Automation</span>
+                </div>
+              </div>
+            </div>
 
-      {/* Card 4 — Custom Web Applications */}
-      <div className="project-card reveal reveal-delay-2">
-        <div className="project-img service-img service-img-web">
-          <div className="project-type">Software</div>
-          <WebAppsIllustration />
-        </div>
+            {/* Card 4 — Custom Web Applications */}
+            <div className="project-card reveal reveal-delay-2">
+              <div className="project-img service-img service-img-web">
+                <div className="project-type">Software</div>
+                <WebAppsIllustration />
+              </div>
 
-        <div className="project-body">
-          <div className="project-title">Custom Web Applications</div>
-          <div className="project-desc">
-            Modern web applications, dashboards, customer portals and
-            business management systems.
-          </div>
-          <div className="project-tags">
-            <span className="tag">Next.js</span>
-            <span className="tag">React</span>
-            <span className="tag">Node.js</span>
-            <span className="tag">MongoDB</span>
-          </div>
-        </div>
-      </div>
+              <div className="project-body">
+                <div className="project-title">Custom Web Applications</div>
+                <div className="project-desc">
+                  Modern web applications, dashboards, customer portals and
+                  business management systems.
+                </div>
+                <div className="project-tags">
+                  <span className="tag">Next.js</span>
+                  <span className="tag">React</span>
+                  <span className="tag">Node.js</span>
+                  <span className="tag">MongoDB</span>
+                </div>
+              </div>
+            </div>
 
-      {/* Card 5 — AI-Powered Business Solutions */}
-      <div className="project-card reveal">
-        <div className="project-img service-img service-img-solutions">
-          <div className="project-type">AI Solutions</div>
-          <AIBusinessIllustration />
-        </div>
+            {/* Card 5 — AI-Powered Business Solutions */}
+            <div className="project-card reveal">
+              <div className="project-img service-img service-img-solutions">
+                <div className="project-type">AI Solutions</div>
+                <AIBusinessIllustration />
+              </div>
 
-        <div className="project-body">
-          <div className="project-title">AI-Powered Business Solutions</div>
-          <div className="project-desc">
-            Add AI capabilities to existing business systems including
-            intelligent search, assistants, document processing and
-            knowledge retrieval.
-          </div>
-          <div className="project-tags">
-            <span className="tag">OpenAI</span>
-            <span className="tag">RAG</span>
-            <span className="tag">Vector DB</span>
-            <span className="tag">APIs</span>
-          </div>
-        </div>
-      </div>
+              <div className="project-body">
+                <div className="project-title">AI-Powered Business Solutions</div>
+                <div className="project-desc">
+                  Add AI capabilities to existing business systems including
+                  intelligent search, assistants, document processing and
+                  knowledge retrieval.
+                </div>
+                <div className="project-tags">
+                  <span className="tag">OpenAI</span>
+                  <span className="tag">RAG</span>
+                  <span className="tag">Vector DB</span>
+                  <span className="tag">APIs</span>
+                </div>
+              </div>
+            </div>
 
             {/* Card 6 — UI/UX Design & Prototyping */}
             <div className="project-card reveal reveal-delay-2">
@@ -664,14 +726,12 @@ export default function Home() {
 
             <Link href="/demos/bio-class" target='_blank' rel="noopener noreferrer">
               <div className="project-card reveal reveal-delay-2">
-                {/* <div className="project-img"> */}
                 <div className="project-img">
                   <img
                     src="/Project/class.png"
                     alt="Grocery Delivery Application"
                     className="project-image"
                   />
-                  {/* </div> */}
                   <div className="project-type">One Page</div>
                 </div>
 
@@ -754,16 +814,14 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="#" target='_blank' rel="noopener noreferrer">
+            <Link href="#">
               <div className="project-card reveal reveal-delay-2">
-                {/* <div className="project-img"> */}
                 <div className="project-img">
                   <img
                     src="/Project/weather-dashboard.png"
                     alt="Weather Forecast Application"
                     className="project-image"
                   />
-                  {/* </div> */}
                   <div className="project-type">One Page</div>
                 </div>
 
@@ -790,7 +848,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="#" target='_blank' rel="noopener noreferrer">
+            <Link href="#">
               <div className="project-card reveal reveal-delay-2">
                 <div className="project-img">
                   <img
@@ -1109,7 +1167,6 @@ export default function Home() {
           className={`chatbot-overlay ${chatOpen ? 'show' : ''}`}
           onClick={closeChat}
         />
-
         {/* Chatbot modal */}
         <div className={`chatbot-modal ${chatOpen ? 'show' : ''}`}>
           <div className="chatbot-header">
@@ -1121,22 +1178,52 @@ export default function Home() {
               />
               <h3 className="chatbot-title">Cybernaxe AI Assistant</h3>
             </div>
-
-            <button className="chatbot-close" onClick={closeChat}>
+            <button
+              className="chatbot-close"
+              onClick={closeChat}
+              aria-label="Close chat"
+            >
               ✕
             </button>
           </div>
 
-          <div className="chatbot-body">
-            <div className="chatbot-message">
-              <h2>👋 Hello!</h2>
-              <p>
-                I&apos;m the Cybernaxe AI Assistant.
-                <br />
-                Ask us about our services, AI agents, automation or
-                software solutions.
-              </p>
-            </div>
+          <div className="chatbot-body" ref={chatBodyRef}>
+            {chatMessages.map((msg, i) => (
+              <div key={i} className={`chat-message chat-message-${msg.role}`}>
+                {msg.content.split('\n').map((line, j) => (
+                  <span key={j}>
+                    {line}
+                    {j < msg.content.split('\n').length - 1 && <br />}
+                  </span>
+                ))}
+              </div>
+            ))}
+
+            {chatLoading && (
+              <div className="chat-message chat-message-assistant chat-typing">
+                <span />
+                <span />
+                <span />
+              </div>
+            )}
+
+            {/* Suggested questions — only show at the start */}
+            {chatMessages.length === 1 && !chatLoading && (
+              <div className="chat-suggestions">
+                <div className="chat-suggestions-label">Try asking:</div>
+                <div className="chat-suggestions-grid">
+                  {SUGGESTED_QUESTIONS.map((q) => (
+                    <button
+                      key={q}
+                      className="chat-suggestion-chip"
+                      onClick={() => handleSuggestedQuestion(q)}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="chatbot-input-area">
@@ -1144,8 +1231,18 @@ export default function Home() {
               type="text"
               className="chatbot-input"
               placeholder="Ask about Cybernaxe..."
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyDown={handleChatKeyDown}
+              disabled={chatLoading}
             />
-            <button className="chatbot-send">Send</button>
+            <button
+              className="chatbot-send"
+              onClick={() => handleChatSend()}
+              disabled={chatLoading || !chatInput.trim()}
+            >
+              {chatLoading ? '...' : 'Send'}
+            </button>
           </div>
         </div>
 
@@ -1175,7 +1272,7 @@ export default function Home() {
           <span className="chat-badge">AI</span>
         </div>
       </div>
-
+      {/* <CommentWidget /> */}
       <Script src="/script.js" />
     </>
   );
