@@ -1,98 +1,53 @@
-/* eslint-disable react-hooks/purity */
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable react-hooks/refs */
+/* eslint-disable react-hooks/purity */
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-const STORAGE_KEY = 'cybernaxe-feedback';
-const SUBMITTED_KEY = 'cybernaxe-feedback-submitted';
-const PAGE_SIZE = 5;
+const STORAGE_KEY = 'cybernaxe-my-feedback';
 
 export default function CommentWidget() {
   const [open, setOpen] = useState(false);
-  const [tab, setTab] = useState('write'); // 'write' | 'recent'
+  const [tab, setTab] = useState('write'); // 'write' | 'mine'
 
-  // Form state
+  // Form
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [sending, setSending] = useState(false);
+
+  // Local-only comments (never fetched from server)
+  const [myComments, setMyComments] = useState([]);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [showHint, setShowHint] = useState(true);
 
-  // Feed state
-  const [comments, setComments] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [showSuccess, setShowSuccess] = useState(false);
+  const listRef = useRef(null);
 
-  const feedRef = useRef(null);
-  const sentinelRef = useRef(null);
-  const ownCommentsRef = useRef(new Set());
+  // ─── Load hint dismissal state ───
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const dismissed = sessionStorage.getItem('cw-hint-dismissed');
+    if (dismissed === 'true') setShowHint(false);
+  }, []);
 
-  // ─── Load local markers on mount ───
+  useEffect(() => {
+    if (open && typeof window !== 'undefined') {
+      sessionStorage.setItem('cw-hint-dismissed', 'true');
+      setShowHint(false);
+    }
+  }, [open]);
+
+  // ─── Load this user's past feedback from localStorage ───
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      ownCommentsRef.current = new Set(
-        saved.map((c) => `${c.comment}|${c.timestamp}`)
-      );
-    } catch {}
-  }, []);
-
-  // ─── Fetch comments ───
-  const fetchComments = useCallback(async () => {
-    const url = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
-    if (!url) return;
-    setLoading(true);
-    try {
-      const res = await fetch(`${url}?action=getComments`, { cache: 'no-store' });
-      if (!res.ok) throw new Error('fetch failed');
-      const data = await res.json();
-      const list = (data.comments || []).map((c, i) => ({
-        id: `${c.timestamp}-${i}`,
-        name: c.name || 'Anonymous',
-        comment: c.comment || '',
-        rating: Number(c.rating) || 0,
-        timestamp: new Date(c.timestamp).toISOString(),
-      }));
-      setComments(list);
+      setMyComments(saved);
     } catch (err) {
-      console.error('fetch comments error:', err);
-    } finally {
-      setLoading(false);
+      console.error('Failed to load local feedback:', err);
     }
   }, []);
-
-  useEffect(() => {
-    fetchComments();
-  }, [fetchComments]);
-
-  // ─── Infinite scroll inside feed ───
-  useEffect(() => {
-    if (tab !== 'recent') return;
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries[0].isIntersecting) return;
-        if (loading) return;
-        if (visibleCount >= comments.length) return;
-        setVisibleCount((v) => Math.min(v + PAGE_SIZE, comments.length));
-      },
-      { root: feedRef.current, rootMargin: '80px' }
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [tab, comments.length, visibleCount, loading]);
-
-  useEffect(() => {
-    setHasMore(visibleCount < comments.length);
-  }, [visibleCount, comments.length]);
 
   // ─── Submit ───
   const handleSubmit = async (e) => {
@@ -106,7 +61,7 @@ export default function CommentWidget() {
     setSending(true);
 
     const now = new Date();
-    const optimistic = {
+    const newEntry = {
       id: `local-${now.getTime()}`,
       name: trimmedName,
       comment: trimmed,
@@ -114,26 +69,16 @@ export default function CommentWidget() {
       timestamp: now.toISOString(),
     };
 
-    // Optimistic insert
-    setComments((prev) => [optimistic, ...prev]);
-    ownCommentsRef.current.add(`${trimmed}|${now.toISOString()}`);
-
-    // Persist locally
+    // Persist locally (visible only on this browser)
+    const updated = [newEntry, ...myComments].slice(0, 20);
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      const updated = [
-        {
-          name: trimmedName,
-          comment: trimmed,
-          rating,
-          timestamp: now.toISOString(),
-        },
-        ...saved,
-      ].slice(0, 10);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      localStorage.setItem(SUBMITTED_KEY, 'true');
-    } catch {}
+    } catch (err) {
+      console.error('Local save failed:', err);
+    }
+    setMyComments(updated);
 
+    // Send to Google Sheet (for admin only - never displayed publicly)
     try {
       const url = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
       if (url) {
@@ -147,6 +92,7 @@ export default function CommentWidget() {
             comment: trimmed,
             page: 'Homepage',
             rating: rating || '',
+            private: true,
           }),
         });
       }
@@ -157,20 +103,42 @@ export default function CommentWidget() {
       setRating(0);
       setShowSuccess(true);
 
-      // Switch to recent tab and show their comment
-      setTab('recent');
-      setVisibleCount((v) => v + 1);
+      // Switch to "mine" tab and scroll to top
+      setTab('mine');
+      if (listRef.current) {
+        listRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
 
-      // Re-sync with server after a moment
-      setTimeout(fetchComments, 2500);
-
-      // Auto-hide success after a few seconds
-      setTimeout(() => setShowSuccess(false), 3500);
+      setTimeout(() => setShowSuccess(false), 4000);
     } catch (err) {
-      console.error('submit error:', err);
-      setComments((prev) => prev.filter((c) => c.id !== optimistic.id));
+      console.error('Submit error:', err);
+      // Keep it locally even if server fails - user experience first
     } finally {
       setSending(false);
+    }
+  };
+
+  const handleDelete = (id) => {
+    if (typeof window === 'undefined') return;
+    if (!window.confirm('Remove this feedback from your device?')) return;
+
+    const updated = myComments.filter((c) => c.id !== id);
+    setMyComments(updated);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } catch (err) {
+      console.error('Delete failed:', err);
+    }
+  };
+
+  const handleClearAll = () => {
+    if (typeof window === 'undefined') return;
+    if (!window.confirm('Remove all your feedback from this device?')) return;
+    setMyComments([]);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (err) {
+      console.error('Clear failed:', err);
     }
   };
 
@@ -186,38 +154,17 @@ export default function CommentWidget() {
     });
   };
 
-  const visible = comments.slice(0, visibleCount);
-  const totalCount = comments.length;
-
-  // Hide the hint once the user has opened the widget
-useEffect(() => {
-  if (typeof window === 'undefined') return;
-  const dismissed = sessionStorage.getItem('cw-hint-dismissed');
-  if (dismissed === 'true') {
-    setShowHint(false);
-  }
-}, []);
-
-// Persist dismissal when the widget is opened
-useEffect(() => {
-  if (open && typeof window !== 'undefined') {
-    sessionStorage.setItem('cw-hint-dismissed', 'true');
-    setShowHint(false);
-  }
-}, [open]);
+  const myCount = myComments.length;
 
   return (
     <>
-      {/* ─── Hint label + Trigger button ─── */}
+      {/* ─── Hint + Trigger ─── */}
 <div className="cw-trigger-wrap">
-
-  {/* Hint chip — only shown when closed and not dismissed */}
   {!open && showHint && (
     <button
       type="button"
       className="cw-hint"
       onClick={() => setOpen(true)}
-      aria-hidden="true"
       tabIndex={-1}
     >
       <span className="cw-hint-icon" aria-hidden="true">
@@ -226,18 +173,15 @@ useEffect(() => {
           <path d="M8 11V7a4 4 0 118 0v4" strokeLinecap="round" />
         </svg>
       </span>
-      <span className="cw-hint-text">
-        Only visible to you
-      </span>
+      <span className="cw-hint-text">Only visible to you</span>
       <span className="cw-hint-close" aria-hidden="true">✕</span>
     </button>
   )}
 
-  {/* Trigger button */}
   <button
     className={`cw-trigger ${open ? 'cw-trigger-hidden' : ''}`}
     onClick={() => setOpen(true)}
-    aria-label="Open feedback"
+    aria-label="Open private feedback"
   >
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path
@@ -246,7 +190,7 @@ useEffect(() => {
         strokeLinejoin="round"
       />
     </svg>
-    {totalCount > 0 && <span className="cw-badge">{totalCount}</span>}
+    {myCount > 0 && <span className="cw-badge">{myCount}</span>}
   </button>
 </div>
 
@@ -256,15 +200,15 @@ useEffect(() => {
         onClick={() => setOpen(false)}
       />
 
-      {/* ─── Widget panel ─── */}
+      {/* ─── Panel ─── */}
       <div className={`cw-panel ${open ? 'show' : ''}`}>
         {/* Header */}
         <div className="cw-header">
           <div className="cw-header-title">
-            <span className="cw-header-icon">💬</span>
+            <span className="cw-header-icon">🔒</span>
             <div>
-              <h3>Share your thoughts</h3>
-              <p>Comment and rate this page</p>
+              <h3>Private feedback</h3>
+              <p>We Valued Your Feedback</p>
             </div>
           </div>
           <button
@@ -285,11 +229,11 @@ useEffect(() => {
             ✏️ Write
           </button>
           <button
-            className={`cw-tab ${tab === 'recent' ? 'active' : ''}`}
-            onClick={() => setTab('recent')}
+            className={`cw-tab ${tab === 'mine' ? 'active' : ''}`}
+            onClick={() => setTab('mine')}
           >
-            💬 Recent
-            {totalCount > 0 && <span className="cw-tab-count">{totalCount}</span>}
+            🔒 My feedback
+            {myCount > 0 && <span className="cw-tab-count">{myCount}</span>}
           </button>
         </div>
 
@@ -311,7 +255,7 @@ useEffect(() => {
               </div>
 
               <div className="cw-field">
-                <label htmlFor="cw-comment">Your comment</label>
+                <label htmlFor="cw-comment">Your feedback</label>
                 <textarea
                   id="cw-comment"
                   value={comment}
@@ -365,58 +309,47 @@ useEffect(() => {
                 className="cw-submit"
                 disabled={sending || !comment.trim()}
               >
-                {sending ? 'Posting...' : 'Post Comment'}
+                {sending ? 'Sending...' : 'Send Private Feedback'}
               </button>
 
               <p className="cw-note">
-                Your comment is public and helps us improve.
+                🔒 Your feedback is private. It goes directly to the Cybernaxe
+                team - no one else sees it.
               </p>
             </form>
           )}
 
-          {tab === 'recent' && (
+          {tab === 'mine' && (
             <>
               {showSuccess && (
                 <div className="cw-success">
                   <span>✓</span>
-                  Thanks! Your feedback has been posted.
+                  Thanks! Your feedback has been received.
                 </div>
               )}
 
-              {loading && comments.length === 0 && (
-                <div className="cw-skeletons">
-                  {[0, 1, 2].map((i) => (
-                    <div key={i} className="cw-skeleton">
-                      <div className="cw-skeleton-avatar" />
-                      <div className="cw-skeleton-lines">
-                        <div className="cw-skeleton-line short" />
-                        <div className="cw-skeleton-line" />
-                        <div className="cw-skeleton-line medium" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {!loading && comments.length === 0 && (
+              {myCount === 0 && (
                 <div className="cw-empty">
-                  <div className="cw-empty-icon">💭</div>
-                  <p>No comments yet.</p>
-                  <span>Be the first to share your thoughts.</span>
+                  <div className="cw-empty-icon">🔒</div>
+                  <p>No feedback yet.</p>
+                  <span>
+                    Your comments will appear here - only on this device.
+                  </span>
+                  <button
+                    type="button"
+                    className="cw-empty-cta"
+                    onClick={() => setTab('write')}
+                  >
+                    Write feedback
+                  </button>
                 </div>
               )}
 
-              {comments.length > 0 && (
-                <div className="cw-feed" ref={feedRef}>
-                  {visible.map((c) => {
-                    const isOwn = ownCommentsRef.current.has(
-                      `${c.comment}|${c.timestamp}`
-                    );
-                    return (
-                      <div
-                        key={c.id}
-                        className={`cw-item ${isOwn ? 'cw-item-own' : ''}`}
-                      >
+              {myCount > 0 && (
+                <>
+                  <div className="cw-feed" ref={listRef}>
+                    {myComments.map((c) => (
+                      <div key={c.id} className="cw-item cw-item-own">
                         <div className="cw-item-head">
                           <div className="cw-avatar">
                             {c.name.charAt(0).toUpperCase()}
@@ -424,9 +357,7 @@ useEffect(() => {
                           <div className="cw-meta">
                             <strong>
                               {c.name}
-                              {isOwn && (
-                                <span className="cw-you-badge">You</span>
-                              )}
+                              <span className="cw-you-badge">You</span>
                             </strong>
                             <span>{timeAgo(c.timestamp)}</span>
                           </div>
@@ -435,20 +366,31 @@ useEffect(() => {
                               {'★'.repeat(c.rating)}
                             </div>
                           )}
+                          <button
+                            type="button"
+                            className="cw-item-delete"
+                            onClick={() => handleDelete(c.id)}
+                            aria-label="Remove this feedback"
+                            title="Remove from device"
+                          >
+                            ✕
+                          </button>
                         </div>
                         <p className="cw-item-text">{c.comment}</p>
                       </div>
-                    );
-                  })}
+                    ))}
+                  </div>
 
-                  {hasMore && (
-                    <div ref={sentinelRef} className="cw-sentinel" />
-                  )}
-
-                  {!hasMore && comments.length > PAGE_SIZE && (
-                    <div className="cw-end">— end of feed —</div>
-                  )}
-                </div>
+                  <div className="cw-feed-footer">
+                    <button
+                      type="button"
+                      className="cw-clear-all"
+                      onClick={handleClearAll}
+                    >
+                      Clear all from this device
+                    </button>
+                  </div>
+                </>
               )}
             </>
           )}
