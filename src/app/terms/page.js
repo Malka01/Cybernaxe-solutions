@@ -69,8 +69,8 @@ export default function Terms() {
         <section id="ip">
           <h2>4. Intellectual Property</h2>
           <p>
-            All content on this website — including text, graphics, logos,
-            code, and design — is the property of Cybernaxe Solutions or its
+            All content on this website - including text, graphics, logos,
+            code, and design - is the property of Cybernaxe Solutions or its
             licensors and is protected by applicable intellectual property
             laws.
           </p>

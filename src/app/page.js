@@ -407,7 +407,7 @@ export default function Home() {
 
           <div className="projects-grid">
 
-            {/* Card 1 — Business Websites & E-commerce */}
+            {/* Card 1 - Business Websites & E-commerce */}
             <div className="project-card reveal reveal-delay-1">
               <div className="project-img service-img service-img-websites">
                 <div className="project-type">Web</div>
@@ -429,7 +429,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 2 — AI Agent Development */}
+            {/* Card 2 - AI Agent Development */}
             <div className="project-card reveal">
               <div className="project-img service-img service-img-agent">
                 <div className="project-type">AI</div>
@@ -452,7 +452,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 3 — Business Automation */}
+            {/* Card 3 - Business Automation */}
             <div className="project-card reveal reveal-delay-1">
               <div className="project-img service-img service-img-automation">
                 <div className="project-type">Automation</div>
@@ -474,7 +474,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 4 — Custom Web Applications */}
+            {/* Card 4 - Custom Web Applications */}
             <div className="project-card reveal reveal-delay-2">
               <div className="project-img service-img service-img-web">
                 <div className="project-type">Software</div>
@@ -496,7 +496,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 5 — AI-Powered Business Solutions */}
+            {/* Card 5 - AI-Powered Business Solutions */}
             <div className="project-card reveal">
               <div className="project-img service-img service-img-solutions">
                 <div className="project-type">AI Solutions</div>
@@ -519,7 +519,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 6 — UI/UX Design & Prototyping */}
+            {/* Card 6 - UI/UX Design & Prototyping */}
             <div className="project-card reveal reveal-delay-2">
               <div className="project-img service-img service-img-design">
                 <div className="project-type">Design</div>
@@ -1207,7 +1207,7 @@ export default function Home() {
               </div>
             )}
 
-            {/* Suggested questions — only show at the start */}
+            {/* Suggested questions - only show at the start */}
             {chatMessages.length === 1 && !chatLoading && (
               <div className="chat-suggestions">
                 <div className="chat-suggestions-label">Try asking:</div>

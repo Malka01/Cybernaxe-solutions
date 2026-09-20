@@ -125,15 +125,15 @@ export default function PrivacyPolicy() {
           <h3>Types of cookies we may use</h3>
           <ul>
             <li>
-              <strong>Essential cookies</strong> — Required for basic website
+              <strong>Essential cookies</strong> - Required for basic website
               functionality
             </li>
             <li>
-              <strong>Analytics cookies</strong> — Help us understand traffic
+              <strong>Analytics cookies</strong> - Help us understand traffic
               and usage patterns
             </li>
             <li>
-              <strong>Preference cookies</strong> — Remember your settings and
+              <strong>Preference cookies</strong> - Remember your settings and
               choices
             </li>
           </ul>
@@ -159,21 +159,21 @@ export default function PrivacyPolicy() {
           </p>
           <ul>
             <li>
-              <strong>Service providers</strong> — Trusted third-party vendors
+              <strong>Service providers</strong> - Trusted third-party vendors
               who help us operate our business (e.g., hosting, analytics,
               communication tools) under strict confidentiality agreements
             </li>
             <li>
-              <strong>Legal requirements</strong> — When required by law,
+              <strong>Legal requirements</strong> - When required by law,
               regulation, legal process, or governmental request
             </li>
             <li>
-              <strong>Business transfers</strong> — In connection with a
+              <strong>Business transfers</strong> - In connection with a
               merger, acquisition, or sale of assets, with notice to affected
               users
             </li>
             <li>
-              <strong>With your consent</strong> — When you explicitly
+              <strong>With your consent</strong> - When you explicitly
               authorize us to share your information
             </li>
           </ul>
@@ -224,27 +224,27 @@ export default function PrivacyPolicy() {
           </p>
           <ul>
             <li>
-              <strong>Access</strong> — Request a copy of the personal
+              <strong>Access</strong> - Request a copy of the personal
               information we hold about you
             </li>
             <li>
-              <strong>Correction</strong> — Request correction of inaccurate or
+              <strong>Correction</strong> - Request correction of inaccurate or
               incomplete information
             </li>
             <li>
-              <strong>Deletion</strong> — Request deletion of your personal
+              <strong>Deletion</strong> - Request deletion of your personal
               information, subject to legal obligations
             </li>
             <li>
-              <strong>Objection</strong> — Object to certain processing of your
+              <strong>Objection</strong> - Object to certain processing of your
               information
             </li>
             <li>
-              <strong>Portability</strong> — Request transfer of your
+              <strong>Portability</strong> - Request transfer of your
               information in a structured format
             </li>
             <li>
-              <strong>Withdraw consent</strong> — Withdraw consent where
+              <strong>Withdraw consent</strong> - Withdraw consent where
               processing is based on consent
             </li>
           </ul>
@@ -263,19 +263,19 @@ export default function PrivacyPolicy() {
           </p>
           <ul>
             <li>
-              <strong>Hosting</strong> — Vercel (website hosting and
+              <strong>Hosting</strong> - Vercel (website hosting and
               deployment)
             </li>
             <li>
-              <strong>Communication</strong> — Google Workspace, WhatsApp (for
+              <strong>Communication</strong> - Google Workspace, WhatsApp (for
               enquiries and messaging)
             </li>
             <li>
-              <strong>Analytics</strong> — Privacy-friendly analytics tools for
+              <strong>Analytics</strong> - Privacy-friendly analytics tools for
               aggregate traffic data
             </li>
             <li>
-              <strong>Storage</strong> — Google Sheets (for contact form
+              <strong>Storage</strong> - Google Sheets (for contact form
               submissions)
             </li>
           </ul>

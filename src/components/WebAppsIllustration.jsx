@@ -115,7 +115,7 @@ export default function WebAppsIllustration({ className = '' }) {
           </text>
         ))}
 
-        {/* Code lines — colorful syntax */}
+        {/* Code lines - colorful syntax */}
         <g fontFamily="JetBrains Mono, monospace" fontSize="7" fontWeight="500">
           <text x="98" y="86" fill="#C084FC">
             import

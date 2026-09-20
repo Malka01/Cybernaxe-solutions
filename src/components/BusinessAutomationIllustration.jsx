@@ -48,7 +48,7 @@ export default function BusinessAutomationIllustration({ className = '' }) {
       <circle cx="200" cy="100" r="105" fill="url(#autoGlow)" />
 
       {/* ─── Workflow nodes ─── */}
-      {/* Node 1 — Trigger (form) */}
+      {/* Node 1 - Trigger (form) */}
       <g>
         <rect x="30" y="80" width="56" height="56" rx="12" fill="url(#autoNodeFill)" stroke="#2A7BEC" strokeWidth="1.6" />
         <rect x="44" y="94" width="28" height="6" rx="2" fill="#2A7BEC" fillOpacity="0.85" />
@@ -57,7 +57,7 @@ export default function BusinessAutomationIllustration({ className = '' }) {
         <circle cx="76" cy="96" r="2.5" fill="#2A7BEC" />
       </g>
 
-      {/* Node 2 — Process (gear) */}
+      {/* Node 2 - Process (gear) */}
       <g>
         <rect x="140" y="80" width="56" height="56" rx="12" fill="url(#autoNodeFill)" stroke="#2A7BEC" strokeWidth="1.6" />
         <g transform="translate(168 108)">
@@ -83,14 +83,14 @@ export default function BusinessAutomationIllustration({ className = '' }) {
         </g>
       </g>
 
-      {/* Node 3 — Decision (branch) */}
+      {/* Node 3 - Decision (branch) */}
       <g>
         <rect x="250" y="80" width="56" height="56" rx="12" fill="url(#autoNodeFill)" stroke="#2A7BEC" strokeWidth="1.6" />
         <path d="M278 96 L290 108 L278 120 L266 108 Z" fill="none" stroke="#2A7BEC" strokeWidth="1.6" strokeLinejoin="round" />
         <circle cx="278" cy="108" r="2" fill="#2A7BEC" />
       </g>
 
-      {/* Node 4 — Output (check) */}
+      {/* Node 4 - Output (check) */}
       <g>
         <rect x="356" y="80" width="28" height="56" rx="12" fill="url(#autoNodeFill)" stroke="#2A7BEC" strokeWidth="1.6" />
         <path

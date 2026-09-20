@@ -120,7 +120,7 @@ export default function BusinessWebsitesIllustration({ className = '' }) {
           shop.cybernaxe.com
         </text>
 
-        {/* Product grid — Row 1 */}
+        {/* Product grid - Row 1 */}
         {[
           { price: '1,200', x: 72 },
           { price: '850', x: 160 },
@@ -140,7 +140,7 @@ export default function BusinessWebsitesIllustration({ className = '' }) {
           </g>
         ))}
 
-        {/* Product grid — Row 2 */}
+        {/* Product grid - Row 2 */}
         {[
           { price: '1,850', x: 72 },
           { price: '620', x: 160 },
