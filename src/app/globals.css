@@ -3668,3 +3668,30 @@ section {
     display: none;
   }
 }
+/* ─── New service card tints ─── */
+
+.project-img.service-img-websites {
+  background: linear-gradient(135deg, #EAF3FF 0%, #dceCff 100%);
+}
+
+.project-img.service-img-design {
+  background: linear-gradient(135deg, #E9F3FF 0%, #ddeBff 100%);
+}
+
+/* ─── 6-card grid: 3×2 on desktop ─── */
+#services .projects-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  #services .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  #services .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}

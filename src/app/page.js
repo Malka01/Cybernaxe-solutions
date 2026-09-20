@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-page-custom-font */
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
@@ -25,6 +26,8 @@ import AIBusinessIllustration from '@/components/AIBusinessIllustration';
 import AIAgentIllustration from '@/components/AIAgentIllustration';
 import BusinessAutomationIllustration from '@/components/BusinessAutomationIllustration';
 import WebAppsIllustration from '@/components/WebAppsIllustration';
+import BusinessWebsitesIllustration from '@/components/BusinessWebsitesIllustration';
+import UIUXDesignIllustration from '@/components/UIUXDesignIllustration';
 
 export default function Home() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -185,7 +188,7 @@ export default function Home() {
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
-        <link rel="stylesheet" href="/style.css" />
+        {/* <link rel="stylesheet" href="/style.css" /> */}
       </Head>
 
       <Navbar />
@@ -340,10 +343,33 @@ export default function Home() {
       <span> modern businesses.</span>
     </h2>
 
-    <div className="projects-grid">
-      {/* Card 1 — AI Agent Development */}
-      <div className="project-card reveal">
-        <div className="project-img service-img service-img-agent">
+          <div className="projects-grid">
+
+            {/* Card 1 — Business Websites & E-commerce */}
+            <div className="project-card reveal reveal-delay-1">
+              <div className="project-img service-img service-img-websites">
+                <div className="project-type">Web</div>
+                <BusinessWebsitesIllustration />
+              </div>
+
+              <div className="project-body">
+                <div className="project-title">Business Websites & E-commerce</div>
+                <div className="project-desc">
+                  Modern business websites, e-commerce stores and portfolio sites
+                  built for speed, SEO and conversions.
+                </div>
+                <div className="project-tags">
+                  <span className="tag">Next.js</span>
+                  <span className="tag">WordPress</span>
+                  <span className="tag">Shopify</span>
+                  <span className="tag">SEO</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2 — AI Agent Development */}
+            <div className="project-card reveal">
+              <div className="project-img service-img service-img-agent">
           <div className="project-type">AI</div>
           <AIAgentIllustration />
         </div>
@@ -364,7 +390,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Card 2 — Business Automation */}
+      {/* Card 3 — Business Automation */}
       <div className="project-card reveal reveal-delay-1">
         <div className="project-img service-img service-img-automation">
           <div className="project-type">Automation</div>
@@ -386,7 +412,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Card 3 — Custom Web Applications */}
+      {/* Card 4 — Custom Web Applications */}
       <div className="project-card reveal reveal-delay-2">
         <div className="project-img service-img service-img-web">
           <div className="project-type">Software</div>
@@ -408,7 +434,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Card 4 — AI-Powered Business Solutions */}
+      {/* Card 5 — AI-Powered Business Solutions */}
       <div className="project-card reveal">
         <div className="project-img service-img service-img-solutions">
           <div className="project-type">AI Solutions</div>
@@ -430,9 +456,31 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+
+            {/* Card 6 — UI/UX Design & Prototyping */}
+            <div className="project-card reveal reveal-delay-2">
+              <div className="project-img service-img service-img-design">
+                <div className="project-type">Design</div>
+                <UIUXDesignIllustration />
+              </div>
+
+              <div className="project-body">
+                <div className="project-title">UI/UX Design & Prototyping</div>
+                <div className="project-desc">
+                  User research, wireframes and high-fidelity prototypes that
+                  turn business goals into intuitive digital products.
+                </div>
+                <div className="project-tags">
+                  <span className="tag">Figma</span>
+                  <span className="tag">Wireframes</span>
+                  <span className="tag">Prototypes</span>
+                  <span className="tag">Design Systems</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ================= AI AGENTS ================= */}
 
@@ -683,7 +731,7 @@ export default function Home() {
                     alt="Ai Agent"
                     className="project-image"
                   />
-                  <div className="project-type">Web App</div>
+                  <div className="project-type">Ai Agent</div>
                 </div>
 
                 <div className="project-body">
@@ -699,7 +747,80 @@ export default function Home() {
                     <span className="tag">LLM/RAG</span>
                     <span className="tag">OpenAI</span>
                   </div>
-                  <div className="project-cta">Ongoing</div>
+                  <div className="project-cta"><a href="#contact">
+                    Launching Soon
+                  </a></div>
+                </div>
+              </div>
+            </Link>
+
+            <Link href="#" target='_blank' rel="noopener noreferrer">
+              <div className="project-card reveal reveal-delay-2">
+                {/* <div className="project-img"> */}
+                <div className="project-img">
+                  <img
+                    src="/Project/weather-dashboard.png"
+                    alt="Weather Forecast Application"
+                    className="project-image"
+                  />
+                  {/* </div> */}
+                  <div className="project-type">One Page</div>
+                </div>
+
+                <div className="project-body">
+                  <div className="project-title">
+                    Weather Focast System
+                  </div>
+                  <div className="project-desc">
+                    A fully Completed weather forecast reporting platform with
+                    dashboards, analytics and an real time assistant
+                    for report insights.
+                  </div>
+                  <div className="project-tags">
+                    <span className="tag">MERN</span>
+                    <span className="tag">APIs</span>
+                    <span className="tag">Next</span>
+                    <span className="tag">Tailwind CSS</span>
+                  </div>
+                  <div className="project-cta">
+                    <a href="#contact">
+                      Request Code
+                    </a></div>
+                </div>
+              </div>
+            </Link>
+
+            <Link href="#" target='_blank' rel="noopener noreferrer">
+              <div className="project-card reveal reveal-delay-2">
+                <div className="project-img">
+                  <img
+                    src="/Project/Admin-dashboard.png"
+                    alt="Grocery Delivery Application"
+                    className="project-image"
+                  />
+                  <div className="project-type">Full Functionality</div>
+                </div>
+
+                <div className="project-body">
+                  <div className="project-title">
+                    Task Management System
+                  </div>
+                  <div className="project-desc">
+                    A full-stack reporting platform with team
+                    dashboards, analytics and an AI-powered assistant
+                    for report insights.
+                  </div>
+                  <div className="project-tags">
+                    <span className="tag">MERN</span>
+                    <span className="tag">APIs</span>
+                    <span className="tag">Next</span>
+                    <span className="tag">Tailwind CSS</span>
+                  </div>
+                  <div className="project-cta">
+                    <a href="#contact">
+                      Request Code
+                    </a>
+                  </div>
                 </div>
               </div>
             </Link>
@@ -724,8 +845,14 @@ export default function Home() {
             <div className="tool-card"><div className="tool-name">MongoDB</div></div>
             <div className="tool-card"><div className="tool-name">Python</div></div>
             <div className="tool-card"><div className="tool-name">OpenAI</div></div>
-            <div className="tool-card"><div className="tool-name">n8n</div></div>
-            <div className="tool-card"><div className="tool-name">REST APIs</div></div>
+            <div className="tool-card"><div className="tool-name">PinoconAPI</div></div>
+            <div className="tool-card"><div className="tool-name">LLM</div></div>
+            <div className="tool-card"><div className="tool-name">RAG</div></div>
+            <div className="tool-card"><div className="tool-name">Express</div></div>
+            <div className="tool-card"><div className="tool-name">Tailwind</div></div>
+            <div className="tool-card"><div className="tool-name">Javascript</div></div>
+            <div className="tool-card"><div className="tool-name">Java</div></div>
+            <div className="tool-card"><div className="tool-name">Go</div></div>
           </div>
         </div>
       </section>
@@ -988,7 +1115,7 @@ export default function Home() {
           <div className="chatbot-header">
             <div className="chatbot-title-area">
               <img
-                src="/image/icon/bot.svg"
+                src="/image/icon/contact.svg"
                 alt="AI Assistant"
                 className="chatbot-bot-icon"
               />
