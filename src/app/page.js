@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 /* eslint-disable @next/next/no-page-custom-font */
 /* eslint-disable @next/next/no-img-element */
 'use client';
@@ -1149,7 +1150,7 @@ export default function Home() {
 
       <div className="floating-actions">
         <a
-          href="https://wa.me/94770202138"
+          href="https://wa.me/94788522997"
           target="_blank"
           rel="noopener noreferrer"
           className="whatsapp-float"

@@ -163,11 +163,11 @@ export default function Terms() {
             <div className="legal-contact-row">
               <span className="legal-contact-label">WhatsApp</span>
               <a
-                href="https://wa.me/94770202138"
+                href="https://wa.me/94788522997"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                +94 77 020 2138
+                +94 78 852 2997
               </a>
             </div>
 

@@ -77,7 +77,7 @@ export const QA_PAIRS = [
       'expensive', 'cheap',
     ],
     answer:
-      "Every project is scoped individually - pricing depends on complexity, features, and timeline.\n\nRough guidance:\n• Business website: from a few hundred USD\n• AI agent: from a few hundred USD\n• Custom software: quote-based\n\nShare what you'd like to build on WhatsApp (+94 77 020 2138) and we'll send a proper proposal.",
+      "Every project is scoped individually - pricing depends on complexity, features, and timeline.\n\nRough guidance:\n• Business website: from a few hundred USD\n• AI agent: from a few hundred USD\n• Custom software: quote-based\n\nShare what you'd like to build on WhatsApp (+94 78 852 2997) and we'll send a proper proposal.",
   },
   {
     id: 'payment',
@@ -140,7 +140,7 @@ export const QA_PAIRS = [
       'hire', 'work with you', 'engage', 'onboard', 'sign up',
     ],
     answer:
-      "Getting started is easy:\n\n1. Tell us what you'd like to build (WhatsApp is fastest)\n2. We'll send a short proposal within 24 hours\n3. You approve, we begin\n\n👉 WhatsApp: +94 77 020 2138\n👉 Or use the contact form on this page\n\nWhat would you like to build?",
+      "Getting started is easy:\n\n1. Tell us what you'd like to build (WhatsApp is fastest)\n2. We'll send a short proposal within 24 hours\n3. You approve, we begin\n\n👉 WhatsApp: +94 78 852 2997\n👉 Or use the contact form on this page\n\nWhat would you like to build?",
   },
   {
     id: 'contact',
@@ -149,7 +149,7 @@ export const QA_PAIRS = [
       'whatsapp', 'phone', 'number', 'linkedin', 'connect',
     ],
     answer:
-      "You can reach us here:\n\n• WhatsApp: +94 77 020 2138 (fastest)\n• LinkedIn: /company/cybernaxe-solutions\n• Contact form: scroll down to 'Let's build something'\n\nWe usually reply within a few hours during business hours.",
+      "You can reach us here:\n\n• WhatsApp: +94 78 852 2997 (fastest)\n• LinkedIn: /company/cybernaxe-solutions\n• Contact form: scroll down to 'Let's build something'\n\nWe usually reply within a few hours during business hours.",
   },
 
   // ─── COMPANY ───
@@ -214,13 +214,13 @@ export const QA_PAIRS = [
     id: 'thanks',
     keywords: ['thank', 'thanks', 'thank you', 'appreciate', 'cheers'],
     answer:
-      "You're welcome! 😊 If you'd like to discuss your project further, message us on WhatsApp at +94 77 020 2138 - we usually reply within a few hours.",
+      "You're welcome! 😊 If you'd like to discuss your project further, message us on WhatsApp at +94 78 852 2997 - we usually reply within a few hours.",
   },
   {
     id: 'bye',
     keywords: ['bye', 'goodbye', 'see you', 'talk later'],
     answer:
-      "Thanks for stopping by! Feel free to come back anytime, or reach us directly on WhatsApp (+94 77 020 2138). Have a great day! 👋",
+      "Thanks for stopping by! Feel free to come back anytime, or reach us directly on WhatsApp (+94 78 852 2997). Have a great day! 👋",
   },
 ];
 
@@ -256,4 +256,4 @@ export function findAnswer(input) {
 }
 
 export const FALLBACK_ANSWER =
-  "I'm not sure I understood that. 🤔\n\nYou can ask me about:\n• Our services\n• Pricing\n• Timelines\n• How to get started\n\nOr message us directly on WhatsApp at +94 77 020 2138 for a quick answer.";
+  "I'm not sure I understood that. 🤔\n\nYou can ask me about:\n• Our services\n• Pricing\n• Timelines\n• How to get started\n\nOr message us directly on WhatsApp at +94 78 852 2997 for a quick answer.";

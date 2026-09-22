@@ -14,7 +14,7 @@ import CommentWidget from '@/components/CommentWidget';
 // =========================================================
 // CONFIG
 // =========================================================
-const WhatsAppNumber = '94770202138';
+const WhatsAppNumber = '94788522997';
 
 // =========================================================
 // TRANSLATIONS
@@ -1650,7 +1650,7 @@ const galleryItems = galleryItemsData[lang];
                 <div className="nt-contact-icon">📞</div>
                 <div>
                   <strong>{t.contactPhone}</strong>
-                  <span>+94 77 020 2138</span>
+                  <span>+94 78 852 2997</span>
                 </div>
               </div>
 
@@ -1748,9 +1748,9 @@ const galleryItems = galleryItemsData[lang];
 
               <p className="nt-form-note">
                 {t.formNote1}
-                <a href={WhatsAppLink} target="_blank" rel="noopener noreferrer">
-                  WhatsApp
-                </a>
+                {/* <a href={WhatsAppLink} target="_blank" rel="noopener noreferrer"> */}
+                  <strong>WhatsApp</strong>
+                {/* </a> */}
                 {t.formNote2}
               </p>
             </form>
@@ -1792,7 +1792,7 @@ const galleryItems = galleryItemsData[lang];
               <a href={WhatsAppLink} target="_blank" rel="noopener noreferrer">
                 WhatsApp
               </a>
-              <a href="tel:+94770202138">+94 77 020 2138</a>
+              <a href="tel:+94788522997">+94 78 852 2997</a>
               <a href="mailto:hello@MsSandunika.lk">hello@MsSandunika.lk</a>
             </div>
           </div>
