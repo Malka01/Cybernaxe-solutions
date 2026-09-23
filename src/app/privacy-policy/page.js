@@ -250,7 +250,7 @@ export default function PrivacyPolicy() {
           </ul>
           <p>
             To exercise these rights, contact us at{' '}
-            <a href="mailto:privacy@cybernaxe.com">privacy@cybernaxe.com</a>.
+            <a href="mailto:cybernaxesolutions@gmail.com">cybernaxesolutions@gmail.com</a>.
             We will respond within 30 days.
           </p>
         </section>
@@ -334,8 +334,8 @@ export default function PrivacyPolicy() {
           <div className="legal-contact-card">
             <div className="legal-contact-row">
               <span className="legal-contact-label">Email</span>
-              <a href="mailto:privacy@cybernaxe.com">
-                privacy@cybernaxe.com
+              <a href="mailto:cybernaxesolutions@gmail.com">
+                cybernaxesolutions@gmail.com
               </a>
             </div>
 
